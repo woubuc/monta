@@ -21,7 +21,10 @@
   },
   "keywords": [
     "language",
-    "template"
+    "template",
+    "compiler",
+    "view",
+    "html"
   ],
   "dependencies": {
     "fs-extra": "^7.0.1"
