@@ -1,0 +1,8 @@
+/.idea
+/.tscache
+
+/coverage
+/lib
+/node_modules
+
+*.log
