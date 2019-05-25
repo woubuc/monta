@@ -23,5 +23,5 @@
     "esModuleInterop": true,
     "inlineSourceMap": true
   },
-  "exclude": ["lib"]
+  "exclude": ["lib", "tests"]
 }
