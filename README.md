@@ -4,6 +4,9 @@ Yet another template language for Node.
 
 Project status: **experimental / early development**
 
+![npm](https://img.shields.io/npm/v/monta.svg)
+[![license](https://img.shields.io/github/license/woubuc/monta.svg)](https://github.com/woubuc/monta/blob/master/LICENSE.txt)
+
 ## Why
 - Not indentation-based
 - Uses JS-like syntax
@@ -113,6 +116,7 @@ const { compileFile } = require('monta');
 ```
 
 ## Why Monta
-I used [this](https://mrsharpoblunto.github.io/foswig.js/) to find a 
-name for the project, and Monta was the first name that I didn't hate 
-and that wasn't taken on npm. So that's what I named it.
+Uninspired as I was, I used 
+[this](https://mrsharpoblunto.github.io/foswig.js/) to find a name for 
+the project, and Monta was the first name that I didn't hate _and_ that
+wasn't taken on npm.
