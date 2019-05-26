@@ -19,3 +19,15 @@ test('multiple variables', async () => {
 	const result = await template.render({ foo: 'one', bar: 'two', baz: 3 });
 	expect(result).toEqual('<p>one, two, 3</p>');
 });
+
+test('path', async () => {
+	const template = await compile('<p>${ foo.bar }</p>');
+	const result = await template.render({ foo: { bar: 'path' } });
+	expect(result).toEqual('<p>path</p>');
+});
+
+test('deep path', async () => {
+	const template = await compile('<p>${ foo.bar.baz.qux }</p>');
+	const result = await template.render({ foo: { bar: { baz: { qux: 'path' } } } });
+	expect(result).toEqual('<p>path</p>');
+});
