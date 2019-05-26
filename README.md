@@ -68,7 +68,7 @@ ${ :end }
 ${ include('otherTemplate.mt') }
 ```
 
-### CLI
+## CLI
 You can use the CLI to compile one or more template files.
 
 ```
@@ -90,7 +90,7 @@ The CLI will skip over any files starting with an underscore. You can
 use this to avoid compiling base templates that your other pages extend
 from.
 
-#### Data
+### Data
 You can pipe a JSON object into Monta CLI, and it will be used as the 
 template data in your templates.
 
@@ -108,7 +108,7 @@ Will result in:
 <p>bar</p>
 ```
 
-### Example
+## Example
 `base.mt`:
 ```html
 <html>
@@ -155,8 +155,26 @@ const { compileFile } = require('monta');
 })();
 ```
 
+Output:
+```html
+<html>
+  <head>
+    <title>Monta Page</title>
+  </head>
+<body>
+  <main>
+    <p>Welcome to my site, woubuc</p>
+  </main>
+
+  <footer>Copyright 2019</footer>
+</body>
+</html>
+```
+
 ## Why Monta
 Uninspired as I was, I used 
 [this](https://mrsharpoblunto.github.io/foswig.js/) to find a name for 
 the project, and Monta was the first name that I didn't hate _and_ that
 wasn't taken on npm.
+
+There is no further meaning to the name.
