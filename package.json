@@ -2,9 +2,9 @@
   "name": "monta-monorepo",
   "private": true,
   "scripts": {
-    "build": "lerna run --parallel build",
+    "build": "lerna run build",
     "dev": "tsc -b -w packages/monta packages/monta-cli",
-    "test": "lerna run --parallel test",
+    "test": "yarn build && lerna run --parallel test",
     "coverage": "lerna run --parallel coverage",
     "postinstall": "lerna bootstrap"
   },
