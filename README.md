@@ -39,6 +39,18 @@ const result = await template.render({ foo: 'bar' });
 console.log(result); // <p>bar</p>
 ```
 
+### Use with Express
+```javascript
+const express = require('express');
+
+const app = express();
+app.engine('mt', require('monta').express);
+
+app.get('/', (req, res) => {
+    res.render('my-template.mt', { foo: 'bar' });
+});
+```
+
 ## Syntax
 Monta templates are basically just HTML files. You can use any file
 extension you like, but all project code and examples will use the 
