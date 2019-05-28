@@ -27,6 +27,9 @@
     "view",
     "html"
   ],
+  "engines" : {
+    "node" : ">=8"
+  },
   "dependencies": {
     "fs-extra": "^7.0.1",
     "globby": "^9.2.0",
