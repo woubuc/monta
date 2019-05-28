@@ -1,20 +1,20 @@
-import minimist from 'minimist';
 import path from 'path';
-import { ensureDir, writeFile } from 'fs-extra';
 import globby from 'globby';
-import { compileFile } from '../';
+import { ensureDir, writeFile } from 'fs-extra';
 
-const EXT = ['.mt', '.html'];
+import { compileFile } from 'monta';
+import { parseOptions } from './options';
 
-export default async function cli(data : object, argv : string[]) {
-	const args = minimist(argv);
-	if (args._.length === 0) throw new Error('No input files given');
+export async function cli(data : object, argv : string[]) {
+	if (argv.includes('-v') || argv.includes('--version')) return;
 
-	const outDir = path.resolve((args.out) ? args.out : 'dist');
+	const options = parseOptions(argv);
+
+	const outDir = path.resolve(options.out);
 	await ensureDir(outDir);
 
-	const files = (await globby(args._))
-		.filter(f => EXT.includes(path.extname(f)))
+	const files = (await globby(options.globs))
+		.filter(f => options.extensions.includes(path.extname(f)))
 		.filter(f => !path.basename(f).startsWith('_'));
 	if (files.length === 0) throw new Error('No input files found');
 

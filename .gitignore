@@ -1,8 +1,9 @@
 /.idea
 /.tscache
-
-/coverage
-/lib
 /node_modules
+
+/packages/*/coverage
+/packages/*/lib
+/packages/*/node_modules
 
 *.log

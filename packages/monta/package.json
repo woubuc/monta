@@ -1,0 +1,47 @@
+{
+  "name": "monta",
+  "version": "0.1.1",
+  "description": "Monta template compiler",
+  "main": "lib/index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/woubuc/monta",
+  "contributors": [
+    "Wouter Buckens (https://www.woubuc.be)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woubuc/monta.git"
+  },
+  "bugs": {
+    "url": "https://github.com/woubuc/monta/issues"
+  },
+  "keywords": [
+    "language",
+    "template",
+    "compiler",
+    "view",
+    "html"
+  ],
+  "scripts": {
+    "build": "rimraf lib/* && tsc",
+    "prepublishOnly": "yarn build && yarn test",
+    "test": "jest",
+    "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "dependencies": {
+    "fs-extra": "~8.0.1",
+    "globby": "~9.2.0"
+  },
+  "devDependencies": {
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib/*"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "monta-cli",
+  "version": "0.1.1",
+  "description": "Monta CLI utility",
+  "bin": "lib/index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/woubuc/monta",
+  "contributors": [
+    "Wouter Buckens (https://www.woubuc.be)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woubuc/monta.git"
+  },
+  "bugs": {
+    "url": "https://github.com/woubuc/monta/issues"
+  },
+  "keywords": [
+    "cli",
+    "template",
+    "html",
+    "generator"
+  ],
+  "scripts": {
+    "build": "rimraf lib/* && tsc",
+    "prepublishOnly": "yarn build && yarn test",
+    "test": "jest",
+    "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib/*"
+  ],
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "globby": "~9.2.0",
+    "minimist": "~1.2.0",
+    "monta": "~0.1.1"
+  }
+}

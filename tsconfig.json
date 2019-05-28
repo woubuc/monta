@@ -4,8 +4,6 @@
     "module": "commonjs",
     "declaration": true,
     "declarationMap": true,
-    "outDir": "lib",
-    "rootDir": "src",
     "removeComments": true,
     "strict": true,
     "noImplicitAny": true,
@@ -22,6 +20,5 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "inlineSourceMap": true
-  },
-  "exclude": ["lib", "tests"]
+  }
 }

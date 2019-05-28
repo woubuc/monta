@@ -1,7 +1,7 @@
 import tmp from 'tmp-promise';
 import path from 'path';
 import { readdir, readFile } from 'fs-extra';
-import cli from '../../src/cli';
+import { cli } from '../src/cli';
 
 test('cli', async () => {
 	jest.setTimeout(10000);
