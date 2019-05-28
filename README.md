@@ -6,6 +6,7 @@ Project status: **experimental / early development**
 
 [![npm](https://img.shields.io/npm/v/monta.svg)](https://www.npmjs.com/package/monta)
 [![license](https://img.shields.io/github/license/woubuc/monta.svg)](https://github.com/woubuc/monta/blob/master/LICENSE.txt)
+[![Build Status](https://travis-ci.org/woubuc/monta.svg?branch=master)](https://travis-ci.org/woubuc/monta)
 
 ## Why
 - Not indentation-based
