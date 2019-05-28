@@ -84,10 +84,10 @@ ${ include('otherTemplate.mt') }
 ```
 
 ## CLI
-You can use the CLI to compile one or more template files.
+You can use the Monta CLI to compile one or more template files.
 
 ```
-npm install --global monta
+npm install --global monta-cli
 
 monta templates/**/*
 ```
@@ -95,15 +95,28 @@ This will compile all `.mt` and `.html` files in the templates/
 directory and subdirectories, and place the rendered html files in the
 default output directory dist/
 
+The CLI will skip over any files starting with an underscore. You can
+use this to avoid compiling base templates that your other pages extend
+from.
+
+### Output
 You can define a different output directory by providing the `--out`
 argument.
 ```
 monta templates/**/* --out ./my-out-dir
 ```
 
-The CLI will skip over any files starting with an underscore. You can
-use this to avoid compiling base templates that your other pages extend
-from.
+### Extensions
+By default, the CLI looks for `.mt` and `.html` files. If you want to
+use a different file extension, you can specify it with the `--ext`
+argument.
+
+```
+monta templates/**/* --ext .myext
+
+monta templates/**/* --ext .mt,.html,.myext
+```
+ 
 
 ### Data
 You can pipe a JSON object into Monta CLI, and it will be used as the 
