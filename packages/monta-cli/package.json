@@ -2,7 +2,9 @@
   "name": "monta-cli",
   "version": "0.1.1",
   "description": "Monta CLI utility",
-  "bin": "lib/index.js",
+  "bin": {
+    "monta": "lib/index.js"
+  },
   "license": "ISC",
   "homepage": "https://github.com/woubuc/monta",
   "contributors": [
