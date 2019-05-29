@@ -8,6 +8,11 @@ import { parseOptions } from './options';
 export async function cli(data : object, argv : string[]) {
 	if (argv.includes('-v') || argv.includes('--version')) return;
 
+	if (argv.includes('-h') || argv.includes('--help')) {
+		console.log('USAGE:\nmonta <files..> [--out <outDir>] [--ext <extList>]');
+		return;
+	}
+
 	const options = parseOptions(argv);
 
 	const outDir = path.resolve(options.out);
