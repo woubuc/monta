@@ -40,7 +40,7 @@
     "lib/*"
   ],
   "dependencies": {
-    "chalk": "^2.4.2",
+    "chalk": "~2.4.2",
     "globby": "~9.2.0",
     "minimist": "~1.2.0",
     "monta": "~0.1.1"
