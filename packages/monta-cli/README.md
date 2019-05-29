@@ -1,10 +1,6 @@
 # Monta CLI
-
-This is the command-line tool to compile 
-[Monta templates](https://github.com/woubuc/monta) into HTML files.
-
-For the compiler module, see the 
-[monta](https://www.npmjs.com/package/monta) package.
+Command-line tool to compile
+[Monta templates](https://www.npmjs.com/package/monta) into HTML files.
 
 ## Usage
 ```
