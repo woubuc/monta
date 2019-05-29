@@ -84,7 +84,7 @@ ${ include('otherTemplate.mt') }
 ```
 
 ## CLI
-
+See the [monta-cli](https://www.npmjs.com/package/monta-cli) package.
 
 ## Example
 `base.mt`:
