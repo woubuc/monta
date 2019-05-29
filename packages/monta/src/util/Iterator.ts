@@ -48,4 +48,24 @@ export class Iterator<T> {
 		if (this.cursor + offset >= this.source.length) return undefined;
 		return this.source[this.cursor + offset];
 	}
+
+	/**
+	 * Checks if the next entries in the iterator match the given data
+	 *
+	 * @param matcher - Data to match
+	 *
+	 * @returns True if the next entries match
+	 */
+	public peekMatch(matcher : T[] | T) : boolean {
+		if (!Array.isArray(matcher)) matcher = [matcher];
+
+		for (let i = 0; i < matcher.length; i++) {
+			const peek = this.peek(i);
+
+			if (peek == undefined) return false;
+			if (peek !== matcher[i]) return false;
+		}
+
+		return true;
+	}
 }

@@ -1,28 +1,6 @@
-import { Iterator } from '../util/Iterator';
-
-export enum TokenType {
-	PlainText,
-	CodeStart,
-	CodeEnd,
-
-	Identifier,
-	Operator,
-	Comma,
-
-	BraceOpen,
-	BraceClose,
-	BlockStart,
-	BlockElse,
-	BlockEnd,
-
-	StringLiteral,
-	NumberLiteral,
-}
-
-export interface Token {
-	type : TokenType;
-	value : string;
-}
+import { StringIterator } from '../../util/StringIterator';
+import { TokenType } from './TokenType';
+import { Token } from './Token';
 
 const KEYWORD_START = /[a-zA-Z_$]/;
 const KEYWORD = /[a-zA-Z0-9_$.]/;
@@ -42,15 +20,17 @@ const SINGLE_CHARS : { [k : string] : TokenType } = Object.freeze({
 
 export default class Lexer {
 
-	private readonly source : Iterator<string>;
+	private source! : StringIterator;
 
 	private tokens : Token[] = [];
 
-	public constructor(html : string) {
-		this.source = new Iterator(html.split(''));
+	public constructor() {
+
 	}
 
-	public run() : Token[] {
+	public run(html : string) : Token[] {
+		this.source = new StringIterator(html);
+
 		while (this.source.hasNext()) {
 			let value = '';
 
@@ -81,7 +61,7 @@ export default class Lexer {
 	private parseCodeBlock() {
 		this.skipWhitespace();
 
-		if (this.matchPeek(':else:')) {
+		if (this.source.peekMatch(':else:')) {
 			this.tokens.push({ type: TokenType.BlockElse, value: ':else:' });
 			this.source.skip(6);
 
@@ -96,7 +76,7 @@ export default class Lexer {
 			return;
 		}
 
-		if (this.matchPeek(':end')) {
+		if (this.source.peekMatch(':end')) {
 			this.tokens.push({ type: TokenType.BlockEnd, value: ':end' });
 			this.source.skip(4);
 
@@ -219,16 +199,6 @@ export default class Lexer {
 			if (/\s/.test(peek)) this.source.skip();
 			else return;
 		}
-	}
-
-	private matchPeek(value : string) : boolean {
-		for (let i = 0; i < value.length; i++) {
-			const peek = this.source.peek(i);
-
-			if (peek == undefined) return false;
-			if (peek !== value.charAt(i)) return false;
-		}
-		return true;
 	}
 
 }

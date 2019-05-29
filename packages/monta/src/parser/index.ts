@@ -1,6 +1,6 @@
 import Parser, { Node, NodeType } from './Parser';
 import { readFile } from 'fs-extra';
-import Lexer from './Lexer';
+import Lexer from './lexer/Lexer';
 import path from "path";
 
 /**
@@ -10,7 +10,7 @@ import path from "path";
  */
 export async function parse(code : string, includePath : string) : Promise<Node[]> {
 	// Parse template
-	const tokens = new Lexer(code).run();
+	const tokens = new Lexer().run(code);
 	let nodes = new Parser(tokens).run();
 
 	if (nodes.length == 0) return [];

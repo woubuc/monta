@@ -1,5 +1,6 @@
 import { Iterator } from '../util/Iterator';
-import { Token, TokenType } from './Lexer';
+import { TokenType } from './lexer/TokenType';
+import { Token } from './lexer/Token';
 
 export enum NodeType {
 	TemplateOutput,
