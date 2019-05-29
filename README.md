@@ -11,8 +11,8 @@ Project status: **experimental / early development**
 
 ## Compiler
 The main Monta package.
-See [monta](packages/monta)
+See [monta](packages/monta#readme)
 
 ## CLI tool
 Template builder.
-See [monta-cli](packages/monta-cli)
+See [monta-cli](packages/monta-cli#readme)
