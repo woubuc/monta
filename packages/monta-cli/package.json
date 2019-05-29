@@ -1,6 +1,6 @@
 {
   "name": "monta-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Monta CLI utility",
   "bin": {
     "monta": "lib/index.js"
