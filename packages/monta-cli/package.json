@@ -6,7 +6,7 @@
     "monta": "lib/index.js"
   },
   "license": "ISC",
-  "homepage": "https://github.com/woubuc/monta",
+  "homepage": "https://github.com/woubuc/monta/tree/master/packages/monta-cli#readme",
   "contributors": [
     "Wouter Buckens (https://www.woubuc.be)"
   ],
