@@ -1,6 +1,6 @@
 {
   "name": "monta",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Monta template compiler",
   "main": "lib/index.js",
   "license": "ISC",
@@ -34,8 +34,6 @@
   "dependencies": {
     "fs-extra": "~8.0.1",
     "globby": "~9.2.0"
-  },
-  "devDependencies": {
   },
   "directories": {
     "lib": "lib",
