@@ -2,6 +2,12 @@
 Command-line tool to compile
 [Monta templates](https://www.npmjs.com/package/monta) into HTML files.
 
+[![npm](https://img.shields.io/npm/v/monta-cli.svg)](https://www.npmjs.com/package/monta-cli)
+[![license](https://img.shields.io/github/license/woubuc/monta.svg)](https://github.com/woubuc/monta/blob/master/LICENSE.txt)
+[![Build Status](https://img.shields.io/travis/woubuc/monta.svg)](https://travis-ci.org/woubuc/monta)
+[![Codecov](https://img.shields.io/codecov/c/gh/woubuc/monta.svg)](https://codecov.io/gh/woubuc/monta)
+[![David](https://img.shields.io/david/woubuc/monta.svg?path=packages%2Fmonta-cli)](https://david-dm.org/woubuc/monta?path=packages%2Fmonta-cli)
+
 ## Usage
 ```
 npm install --global monta-cli

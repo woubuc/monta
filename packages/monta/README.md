@@ -8,7 +8,7 @@ Project status: **experimental / early development**
 [![license](https://img.shields.io/github/license/woubuc/monta.svg)](https://github.com/woubuc/monta/blob/master/LICENSE.txt)
 [![Build Status](https://img.shields.io/travis/woubuc/monta.svg)](https://travis-ci.org/woubuc/monta)
 [![Codecov](https://img.shields.io/codecov/c/gh/woubuc/monta.svg)](https://codecov.io/gh/woubuc/monta)
-[![David](https://img.shields.io/david/woubuc/monta.svg)](https://david-dm.org/woubuc/monta)
+[![David](https://img.shields.io/david/woubuc/monta.svg?path=packages%2Fmonta)](https://david-dm.org/woubuc/monta?path=packages%2Fmonta)
 
 ## Why
 - Not indentation-based
