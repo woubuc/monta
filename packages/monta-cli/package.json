@@ -8,7 +8,7 @@
   "license": "ISC",
   "homepage": "https://github.com/woubuc/monta/tree/master/packages/monta-cli#readme",
   "contributors": [
-    "Wouter Buckens (https://www.woubuc.be)"
+    "Wouter Buckens <wouter@epicteddy.com> (https://www.woubuc.be)"
   ],
   "repository": {
     "type": "git",
