@@ -9,6 +9,7 @@ export enum TokenType {
 	Identifier,
 	Operator,
 	Comma,
+	Pipe,
 
 	BraceOpen,
 	BraceClose,

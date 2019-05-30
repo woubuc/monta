@@ -106,6 +106,11 @@ export default class Lexer {
 				continue;
 			}
 
+			if (next === '|') {
+				this.tokens.push({ type: TokenType.Pipe, value: '|' });
+				continue;
+			}
+
 			if (next === ':') {
 				const peek = this.source.peek();
 				if (peek == undefined) throw new Error('Unexpected end of file, expected `}`');

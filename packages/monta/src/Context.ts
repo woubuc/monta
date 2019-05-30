@@ -1,5 +1,5 @@
 import path from 'path';
-import { FnDef } from './functions';
+import { execFn, FnArgs, hasFn } from './plugins/Fn';
 
 export class ContextMeta {
 
@@ -15,7 +15,7 @@ export class ContextMeta {
 	}
 }
 
-export default class Context {
+export class Context {
 
 	private readonly root : Context;
 	private readonly parent? : Context;
@@ -23,17 +23,12 @@ export default class Context {
 	private readonly data : object;
 	public meta : ContextMeta;
 
-	private readonly functions : Map<string, FnDef>;
 	private readonly functionData : Map<string, any>;
 
-	constructor(data : object, functions : Map<string, FnDef>);
-	constructor(data : object, parent : Context);
-	constructor(data : object, functionsOrParent : Map<string, FnDef> | Context) {
+	constructor(data : object, parent? : Context) {
 		this.data = data;
 
-		if (functionsOrParent instanceof Context) {
-			const parent = functionsOrParent as Context;
-			this.functions = parent.functions;
+		if (parent) {
 			this.functionData = parent.functionData;
 			this.root = parent.root;
 			this.parent = parent;
@@ -41,7 +36,6 @@ export default class Context {
 			this.meta = new ContextMeta(parent.meta);
 		} else {
 			this.root = this;
-			this.functions = functionsOrParent;
 			this.functionData = new Map();
 
 			this.meta = new ContextMeta();
@@ -62,8 +56,12 @@ export default class Context {
 		return value as T;
 	}
 
-	public getFunction(name : string) : FnDef | undefined {
-		return this.functions.get(name);
+	public hasFn(name : string) : boolean {
+		return hasFn(name);
+	}
+
+	public async execFn(name : string, args : Exclude<FnArgs, 'ctx'>) : Promise<any> {
+		return execFn(name, { ...args, ctx: this });
 	}
 
 	public getSubContext(path : string = '.') : Context {

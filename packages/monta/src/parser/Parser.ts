@@ -7,19 +7,20 @@ export enum NodeType {
 	TokenGroup,
 	Function,
 	Expression,
+	PipeSequence,
 	Variable,
 	Operator,
 	LiteralValue,
 }
 
-export interface Node {
-	type : NodeType;
+export class Node {
+	public type! : NodeType;
 
-	value? : Token;
+	public value? : Token;
 
-	params? : Node[];
-	children? : Node[];
-	elseChildren? : Node[];
+	public params? : Node[];
+	public children? : Node[];
+	public elseChildren? : Node[];
 }
 export interface NodeWithParams extends Node {
 	params : Node[];
@@ -111,7 +112,17 @@ export default class Parser {
 		}
 
 		if (peek.type === TokenType.Operator) {
-			return this.parseExpression(identifier);
+			return {
+				type: NodeType.TemplateOutput,
+				params: [this.parseExpression(identifier)]
+			}
+		}
+
+		if (peek.type === TokenType.Pipe) {
+			return this.parsePipeSequence({
+				type: NodeType.Variable,
+				value: identifier,
+			});
 		}
 
 		throw new Error('Unexpected identifier `' + identifier.value + '`');
@@ -146,9 +157,11 @@ export default class Parser {
 	private parseBraceGroup() : Node[] {
 		const tokens : Node[] = [];
 
-		let comma = false;
+		let comma = null;
 		while (this.source.hasNext()) {
 			const next = this.source.next();
+
+			if (comma === null && next.type === TokenType.BraceClose) return tokens;
 
 			if (comma) {
 				if (next.type === TokenType.BraceClose) return tokens;
@@ -239,6 +252,59 @@ export default class Parser {
 		}
 
 		return expr;
+	}
+
+	private parsePipeSequence(startNode : Node) : Node {
+		const sequence : NodeWithParams = {
+			type: NodeType.PipeSequence,
+			params: [startNode]
+		};
+
+		let pipe = true;
+
+		while (this.source.hasNext()) {
+			const peek = this.source.peek() as Token;
+
+			if (pipe) {
+				if (peek.type === TokenType.Pipe) {
+					this.source.skip();
+					pipe = false;
+					continue;
+				}
+
+				if (peek.type === TokenType.CodeEnd) {
+					return sequence;
+				}
+
+				throw new Error('Unexpected token `' + peek.value + '`, expected `|`');
+			}
+
+			pipe = true;
+
+			if (peek.type === TokenType.Identifier) {
+				const identNode = this.parseIdentifier();
+
+				if (identNode.type === NodeType.PipeSequence) {
+					sequence.params.push(...identNode.params as Node[]);
+				} else {
+					sequence.params.push(identNode);
+				}
+
+				continue;
+			}
+
+			if (peek.type === TokenType.StringLiteral) {
+				sequence.params.push({
+					type: NodeType.LiteralValue,
+					value: this.source.next(),
+				});
+				continue;
+			}
+
+			throw new Error('Unexpected token `' + peek.value + '`');
+		}
+
+		throw new Error('Unexpected end of file');
 	}
 
 }

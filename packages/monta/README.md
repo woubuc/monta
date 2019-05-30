@@ -81,6 +81,13 @@ ${ :end }
 
 <!-- Include another template file (in-place) -->
 ${ include('otherTemplate.mt') }
+
+<!-- String operations -->
+${ myVar | trim() }
+${ myVar | upper() }
+${ myVar | lower() }
+${ myVar | padLeft(6) }
+${ myVar | padRight(6) }
 ```
 
 ## CLI

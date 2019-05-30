@@ -1,7 +1,6 @@
 import { Node } from './parser/Parser';
-import Context from './Context';
-import { loadFunctions } from './functions';
-import { render } from './render';
+import { Context } from './Context';
+import { Renderer } from './Renderer';
 
 export default class CompiledTemplate {
 
@@ -18,9 +17,11 @@ export default class CompiledTemplate {
 	}
 
 	public async render(data : { [key : string] : any } = {}) : Promise<string> {
-		const ctx = new Context(data, await loadFunctions());
+		const ctx = new Context(data);
 		ctx.meta.file = this.file;
 		ctx.meta.path = this.path;
-		return render(this.nodes, ctx);
+
+		const renderer = new Renderer();
+		return renderer.render(this.nodes, ctx);
 	}
 }
