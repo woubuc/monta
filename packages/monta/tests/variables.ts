@@ -1,33 +1,21 @@
-import { compile } from '../src';
+import { render } from '../src';
 
 test('string', async () => {
-	const template = await compile('<p>${ foo }</p>');
-	const result = await template.render({ foo: 'test' });
-	expect(result).toEqual('<p>test</p>');
+	expect(render('<p>${ foo }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
 });
 
 test('number', async () => {
-	const template = await compile('<p>${ foo }</p>');
-	expect(template).toBeTruthy();
-
-	const result = await template.render({ foo: 42 });
-	expect(result).toEqual('<p>42</p>');
+	expect(render('<p>${ foo }</p>', { foo: 42 })).resolves.toBe('<p>42</p>');
 });
 
 test('multiple variables', async () => {
-	const template = await compile('<p>${ foo }, ${ bar }, ${ baz }</p>');
-	const result = await template.render({ foo: 'one', bar: 'two', baz: 3 });
-	expect(result).toEqual('<p>one, two, 3</p>');
+	expect(render('<p>${ foo }, ${ bar }, ${ baz }</p>', { foo: 'one', bar: 'two', baz: 3 })).resolves.toBe('<p>one, two, 3</p>');
 });
 
 test('path', async () => {
-	const template = await compile('<p>${ foo.bar }</p>');
-	const result = await template.render({ foo: { bar: 'path' } });
-	expect(result).toEqual('<p>path</p>');
+	expect(render('<p>${ foo.bar }</p>', { foo: { bar: 'baz' } })).resolves.toBe('<p>baz</p>');
 });
 
 test('deep path', async () => {
-	const template = await compile('<p>${ foo.bar.baz.qux }</p>');
-	const result = await template.render({ foo: { bar: { baz: { qux: 'path' } } } });
-	expect(result).toEqual('<p>path</p>');
+	expect(render('<p>${ foo.bar.baz }</p>', { foo: { bar: { baz: 'qux' } } })).resolves.toBe('<p>qux</p>');
 });

@@ -16,7 +16,7 @@ export default class CompiledTemplate {
 		this.nodes = nodes;
 	}
 
-	public async render(data : { [key : string] : any } = {}) : Promise<string> {
+	public async render(data : Record<string, any> = {}) : Promise<string> {
 		const ctx = new Context(data);
 		ctx.meta.file = this.file;
 		ctx.meta.path = this.path;

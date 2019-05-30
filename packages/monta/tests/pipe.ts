@@ -1,13 +1,9 @@
-import { compile } from '../src';
+import { render } from '../src';
 
-test('single pipe', async () => {
-	const template = await compile('<p>${ foo | trim() }</p>');
-	const result = await template.render({ foo: '   test  ' });
-	expect(result).toEqual('<p>test</p>');
+test('single pipe', () => {
+	expect(render('<p>${ foo | trim() }</p>', { foo: '  bar '})).resolves.toBe('<p>bar</p>');
 });
 
 test('multiple pipe', async () => {
-	const template = await compile('<p>${ foo | trim() | upper() }</p>');
-	const result = await template.render({ foo: '   test  ' });
-	expect(result).toEqual('<p>TEST</p>');
+	expect(render('<p>${ foo | trim() | upper() }</p>', { foo: '  bar '})).resolves.toBe('<p>BAR</p>');
 });

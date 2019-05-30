@@ -1,31 +1,32 @@
-import { compile } from '../../src';
+import { render } from '../../src';
 
 test('trim', async () => {
-	const template = await compile('<p>${ foo | trim() }</p>');
-	const result = await template.render({ foo: '   bar  ' });
-	expect(result).toEqual('<p>bar</p>');
+	expect(render('<p>${ foo | trim() }</p>', { foo: '   bar  ' })).resolves.toBe('<p>bar</p>');
+	expect(render('<p>${ foo | trim() }</p>', { foo: 'bar  ' })).resolves.toBe('<p>bar</p>');
+	expect(render('<p>${ foo | trim() }</p>', { foo: '   bar' })).resolves.toBe('<p>bar</p>');
+	expect(render('<p>${ foo | trim() }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
 });
 
 test('upper', async () => {
-	const template = await compile('<p>${ foo | upper() }</p>');
-	const result = await template.render({ foo: 'bar' });
-	expect(result).toEqual('<p>BAR</p>');
+	expect(render('<p>${ foo | upper() }</p>', { foo: 'bar' })).resolves.toBe('<p>BAR</p>');
+	expect(render('<p>${ foo | upper() }</p>', { foo: 'BaR' })).resolves.toBe('<p>BAR</p>');
+	expect(render('<p>${ foo | upper() }</p>', { foo: 'BAR' })).resolves.toBe('<p>BAR</p>');
 });
 
 test('lower', async () => {
-	const template = await compile('<p>${ foo | lower() }</p>');
-	const result = await template.render({ foo: 'BAR' });
-	expect(result).toEqual('<p>bar</p>');
+	expect(render('<p>${ foo | lower() }</p>', { foo: 'BAR' })).resolves.toBe('<p>bar</p>');
+	expect(render('<p>${ foo | lower() }</p>', { foo: 'BaR' })).resolves.toBe('<p>bar</p>');
+	expect(render('<p>${ foo | lower() }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
 });
 
 test('padLeft', async () => {
-	const template = await compile('<p>${ foo | padLeft(5) }</p>');
-	const result = await template.render({ foo: 'bar' });
-	expect(result).toEqual('<p>  bar</p>');
+	expect(render('<p>${ foo | padLeft(5) }</p>', { foo: 'bar' })).resolves.toBe('<p>  bar</p>');
+	expect(render('<p>${ foo | padLeft(3) }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
+	expect(render('<p>${ foo | padLeft(1) }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
 });
 
 test('padRight', async () => {
-	const template = await compile('<p>${ foo | padRight(5) }</p>');
-	const result = await template.render({ foo: 'bar' });
-	expect(result).toEqual('<p>bar  </p>');
+	expect(render('<p>${ foo | padRight(5) }</p>', { foo: 'bar' })).resolves.toBe('<p>bar  </p>');
+	expect(render('<p>${ foo | padRight(3) }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
+	expect(render('<p>${ foo | padRight(1) }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
 });
