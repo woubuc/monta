@@ -2,17 +2,17 @@ language: node_js
 cache: yarn
 
 node_js:
-- "8"
-- "10"
-- "12"
+  - "8"
+  - "10"
+  - "node"
 
 jobs:
   include:
     - stage: lint
       script: yarn lint
-      node_js: "12"
+      node_js: "node"
     - stage: test
       script: yarn test
     - stage: coverage
       script: yarn coverage
-      node_js: "12"
+      node_js: "node"
