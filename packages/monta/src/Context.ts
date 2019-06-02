@@ -1,5 +1,5 @@
 import path from 'path';
-import { execFn, FnArgs, hasFn } from './plugins/Fn';
+import { execFn, FnArgs, hasFn, hasPost, hasPre } from './plugins/Fn';
 import { MontaOptions } from './Options';
 
 export interface ContextMetaData {
@@ -19,10 +19,10 @@ export class ContextMeta implements ContextMetaData {
 	public readonly path : string = '';
 	public readonly filename : string = '';
 
-	constructor();
-	constructor(data : ContextMeta);
-	constructor(data : Partial<ContextMetaData>);
-	constructor(data? : ContextMeta | Partial<ContextMetaData>) {
+	public constructor();
+	public constructor(data : ContextMeta);
+	public constructor(data : Partial<ContextMetaData>);
+	public constructor(data ?: ContextMeta | Partial<ContextMetaData>) {
 		if (!data) return;
 
 		if (data.file) {
@@ -36,7 +36,7 @@ export class ContextMeta implements ContextMetaData {
 export class Context {
 
 	private readonly root : Context;
-	private readonly parent? : Context;
+	private readonly parent ?: Context;
 
 	private readonly data : Record<string, any>;
 	public meta : ContextMetaData;
@@ -44,12 +44,12 @@ export class Context {
 	private readonly functionData : Map<string, any>;
 	public options : MontaOptions;
 
-	constructor(options : MontaOptions);
-	constructor(options : MontaOptions, data : Record<string, any>);
-	constructor(options : MontaOptions, data : Record<string, any>, parent : Context);
-	constructor(options : MontaOptions, data : Record<string, any>, meta : ContextMeta);
-	constructor(options : MontaOptions, data : Record<string, any>, parent : Context, meta : ContextMeta);
-	constructor(options : MontaOptions, data : Record<string, any> = {}, parentOrMeta? : Context | ContextMeta, meta? : ContextMeta) {
+	public constructor(options : MontaOptions);
+	public constructor(options : MontaOptions, data : Record<string, any>);
+	public constructor(options : MontaOptions, data : Record<string, any>, parent : Context);
+	public constructor(options : MontaOptions, data : Record<string, any>, meta : ContextMeta);
+	public constructor(options : MontaOptions, data : Record<string, any>, parent : Context, meta : ContextMeta);
+	public constructor(options : MontaOptions, data : Record<string, any> = {}, parentOrMeta ?: Context | ContextMeta, meta ?: ContextMeta) {
 		this.options = options;
 		this.data = data;
 
@@ -75,7 +75,7 @@ export class Context {
 		return this.functionData.get(key);
 	}
 
-	public setData<T>(key : string, value : T) {
+	public setData<T>(key : string, value : T) : void {
 		this.functionData.set(key, value);
 	}
 
@@ -86,7 +86,7 @@ export class Context {
 	}
 
 	public hasFn(name : string) : boolean {
-		return hasFn(name);
+		return hasFn(name) || hasPre(name) || hasPost(name);
 	}
 
 	public async execFn(name : string, args : Exclude<FnArgs, 'ctx'>) : Promise<any> {

@@ -24,7 +24,7 @@ export default class Monta {
 	 *
 	 * @param options - The Monta configuration options
 	 */
-	public constructor(options?: Partial<MontaOptions>) {
+	public constructor(options ?: Partial<MontaOptions>) {
 		this[internal] = new Internal(options);
 	}
 
@@ -33,7 +33,7 @@ export default class Monta {
 	 *
 	 * @param code - The code to compile
 	 */
-	public compile(code: string) : Promise<Template> {
+	public compile(code : string) : Promise<Template> {
 		return this[internal].compile(code);
 	}
 
@@ -79,7 +79,7 @@ export default class Monta {
 	 * @param data     - Template data
 	 * @param callback - Callback function to be called when the template has been rendered
 	 */
-	public async express(filePath : string, data : Record<string, any>, callback : (err : any, result : string) => void) {
+	public async express(filePath : string, data : Record<string, any>, callback : (err : any, result : string) => void) : Promise<void> {
 		const result = await this.renderFile(filePath, data);
 		callback(null, result);
 	}

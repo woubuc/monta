@@ -4,9 +4,10 @@ import { pluginLoaded } from './plugins';
 /**
  * The plugin options that can be passed to Monta
  *
- * Plugins written in Typescript should add to this interface.
+ * This interface is empty by default, but plugins
+ * should add their configuration values to it.
  */
-export interface MontaPluginOptions { }
+export interface MontaPluginOptions { } // eslint-disable-line @typescript-eslint/no-empty-interface
 
 /**
  * The options that can be passed to Monta
@@ -16,7 +17,7 @@ export interface MontaOptions {
 	templateRoot : string;
 
 	/** The plugin options */
-	plugins: MontaPluginOptions;
+	plugins : MontaPluginOptions;
 }
 
 /**

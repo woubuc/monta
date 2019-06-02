@@ -1,6 +1,6 @@
 export class Iterator<T> {
 
-	private readonly source: T[];
+	private readonly source : T[];
 	private cursor : number = 0;
 
 	/**
@@ -8,7 +8,7 @@ export class Iterator<T> {
 	 *
 	 * @param source - The source data
 	 */
-	public constructor(source: T[]) {
+	public constructor(source : T[]) {
 		this.source = source;
 	}
 
@@ -33,7 +33,7 @@ export class Iterator<T> {
 	 * Advances the cursor without returning characters
 	 * @param count - Number of characters to skip
 	 */
-	public skip(count: number = 1) {
+	public skip(count : number = 1) : void {
 		for (let i = 0; i < count; i++) {
 			this.next();
 		}

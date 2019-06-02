@@ -5,7 +5,7 @@ import { Context, ContextMeta } from './Context';
 import { Internal } from './Internal';
 import { parse, parseFile } from './parser';
 
-export type Template = (data? : Record<string, any>) => Promise<string>;
+export type Template = (data ?: Record<string, any>) => Promise<string>;
 
 export async function createTemplateFromCode(monta : Internal, code : string) : Promise<Template> {
 	const nodes = await parse(monta.options.templateRoot, code);
@@ -22,5 +22,5 @@ export async function createTemplateFromFile(monta : Internal, fileName : string
 async function createTemplate(monta : Internal, nodes : Node[], meta : ContextMeta) : Promise<Template> {
 	return async function render(data : Record<string, any> = {}) {
 		return monta.renderer.render(nodes, new Context(monta.options, data, meta));
-	}
+	};
 }

@@ -49,9 +49,9 @@ export function parseOptions(argv : string[]) : CliOptions {
  *
  * @param ext - `ext` property of args
  */
-function getExt(ext? : string) : string[] {
+function getExt(ext ?: string) : string[] {
 	if (!ext) return DEFAULT_EXT;
 
 	let exts : string[] = Array.isArray(ext) ? ext : ext.split(',');
-	return exts.map((e : string) => e.startsWith('.') ? e : `.${ e }`)
+	return exts.map((e : string) => e.startsWith('.') ? e : `.${ e }`);
 }

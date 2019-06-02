@@ -12,12 +12,13 @@ export class Renderer {
 
 	private output : Output = [];
 
-	constructor(_ : Internal) { }
+	public constructor(_ : Internal) {
+	}
 
 	public async render(nodes : Node[], ctx : Context) : Promise<string> {
 		this.output = nodes;
 
-		while(true) {
+		while (true) { // eslint-disable-line no-constant-condition
 			if (!await this.renderPass(RenderStep.Pre, ctx)) continue;
 			if (!await this.renderPass(RenderStep.Fn, ctx)) continue;
 			if (!await this.renderPass(RenderStep.Post, ctx)) continue;
@@ -36,7 +37,7 @@ export class Renderer {
 
 	private async renderPass(step : RenderStep, ctx : Context) : Promise<boolean> {
 		const output : Output = [];
-		const push = (data : Output | string | Node) => {
+		const push = (data : Output | string | Node) : void => {
 			if (Array.isArray(data)) output.push(...data);
 			else output.push(data);
 		};
@@ -54,39 +55,40 @@ export class Renderer {
 			}
 
 			switch (node.type) {
-				case NodeType.TemplateOutput:
+				case NodeType.TemplateOutput: {
 					if (!node.params) continue;
 
 					for (const param of node.params) {
 						push(this.getValue(param, ctx));
 					}
 					break;
+				}
 
-				case NodeType.TokenGroup:
-					console.log('Unknown token group:', node);
-					break;
+				case NodeType.TokenGroup: {
+					throw new Error('Unknown token group: ' + require('util').inspect(node) + ' (not yet implemented?)');
+				}
 
-				case NodeType.Function:
+				case NodeType.Function: {
 					const result = await this.execFunction(step, node, ctx);
 					if (result != null) push(result);
 					break;
+				}
 
-				case NodeType.Expression:
-					console.warn('Operator expressions not implemented yet (on line: ' + (node.params ? node.params.map(p => p.value ? p.value.value : '') : []).join(' ') + ')'); // TODO implement expressions
-					break;
+				case NodeType.Expression: {
+					throw new Error('Operator expressions not implemented yet (on line: ' + (node.params ? node.params.map(p => p.value ? p.value.value : '') : []).join(' ') + ')'); // TODO implement expressions
+				}
 
-				case NodeType.PipeSequence:
+				case NodeType.PipeSequence: {
 					let lastValue : any = undefined;
 					for (const next of node.params as Node[]) {
 
 						if (next.type === NodeType.Variable) {
-							if (lastValue != undefined) console.warn('Piping into variable');
-							lastValue = ctx.getValue(next.value!.value);
+							if (!next.value) throw new Error('Variable node without value');
+							lastValue = ctx.getValue(next.value.value);
 							continue;
 						}
 
 						if (next.type === NodeType.LiteralValue) {
-							if (lastValue != undefined) console.warn('Piping into literal value');
 							lastValue = this.getValue(next, ctx);
 							continue;
 						}
@@ -101,15 +103,16 @@ export class Renderer {
 							continue;
 						}
 
-						throw new Error('Unexpected node: ' + (node.value? node.value.value : ''));
+						throw new Error('Unexpected node: ' + (node.value ? node.value.value : ''));
 					}
 
 					push(lastValue);
 
 					break;
+				}
 
 				default:
-					console.error('Unhandled node:', node);
+					throw new Error('Unhandled node: ' + require('util').inspect(node) + ' (not implemented?)');
 			}
 		}
 
@@ -120,11 +123,13 @@ export class Renderer {
 
 	private getValue(node : Node, ctx : Context) : string {
 		if (node.type === NodeType.LiteralValue) {
-			return node.value!.value;
+			if (!node.value) throw new Error('Value node without value');
+			return node.value.value;
 		}
 
 		if (node.type === NodeType.Variable) {
-			const value = ctx.getValue<string>(node.value!.value);
+			if (!node.value) throw new Error('Variable node without value');
+			const value = ctx.getValue<string>(node.value.value);
 
 			if (!value) return 'undefined';
 			return value.toString();
@@ -133,8 +138,9 @@ export class Renderer {
 		throw new Error('Unknown value type: ' + node.type);
 	}
 
-	private async execFunction(step : RenderStep, node : Node, ctx : Context, input? : any) : Promise<string | Node | null> {
-		const name = node.value!.value;
+	private async execFunction(step : RenderStep, node : Node, ctx : Context, input ?: any) : Promise<string | Node | null> {
+		if (!node.value) throw new Error('Variable node without value');
+		const name = node.value.value;
 
 		if (!hasPre(name) && !hasFn(name) && !hasPost(name)) {
 			throw new Error('Function `' + name + '` does not exist');

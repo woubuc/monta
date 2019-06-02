@@ -16,7 +16,7 @@ function blockFn(name : string, block : Node[], ctx : Context) : Node[] {
 	return [];
 }
 
-export default function(plugin : MontaPlugin) {
+export default function(plugin : MontaPlugin) : void {
 
 	plugin.registerPre('define',
 		({ node, ctx, args, block }) => definePre(args[0], node, block || [], ctx),

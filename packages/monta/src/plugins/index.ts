@@ -11,11 +11,11 @@ export interface MontaPlugin {
 
 const loadedPlugins : string[] = [];
 
-export function pluginLoaded(name : string) {
+export function pluginLoaded(name : string) : boolean {
 	return loadedPlugins.includes(name);
 }
 
-export async function loadPlugins() {
+export async function loadPlugins() : Promise<void> {
 
 	const plugins = [
 		...BUILTINS.map(b => `./builtins/${ b }`),
@@ -28,7 +28,7 @@ export async function loadPlugins() {
 		if (typeof plugin !== 'function') throw new Error('Plugin ' + name + ' is not a function');
 
 		loadedPlugins.push(name.slice(13));
-		plugin({ registerFn, registerPre, registerPost } as MontaPlugin);
+		plugin({ registerFn, registerPre, registerPost });
 	}
 }
 

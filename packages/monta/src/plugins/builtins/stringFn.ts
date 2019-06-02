@@ -1,6 +1,6 @@
 import { MontaPlugin } from '../index';
 
-export default function(plugin : MontaPlugin) {
+export default function(plugin : MontaPlugin) : void {
 
 	plugin.registerFn('trim',
 		({ args, input }) => trim(input || args[0]) ,
@@ -23,29 +23,29 @@ export default function(plugin : MontaPlugin) {
 		{ pipeable: true, requiredArgs: 1, maxArgs: 2 });
 }
 
-function trim(str? : string) : string {
+function trim(str ?: string) : string {
 	if (!str) return '';
 	return str.trim();
 }
 
-function upper(str? : string) : string {
+function upper(str ?: string) : string {
 	if (!str) return '';
 	return str.toUpperCase();
 }
 
-function lower(str? : string) : string {
+function lower(str ?: string) : string {
 	if (!str) return '';
 	return str.toLowerCase();
 }
 
-function padRight(str? : string, length? : number) : string {
+function padRight(str ?: string, length ?: number) : string {
 	if (!str) return '';
 	if (!length) return str;
 
 	return str + ' '.repeat(Math.max(0, length - str.length));
 }
 
-function padLeft(str? : string, length? : number) : string {
+function padLeft(str ?: string, length ?: number) : string {
 	if (!str) return '';
 	if (!length) return str;
 

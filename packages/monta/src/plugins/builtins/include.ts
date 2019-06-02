@@ -8,7 +8,7 @@ function include(fileName : string, ctx : Context) : Promise<Node[]> {
 	return parseFile(ctx.options.templateRoot, filePath);
 }
 
-export default function(plugin : MontaPlugin) {
+export default function(plugin : MontaPlugin) : void {
 
 	plugin.registerPre('include',
 		({ args, ctx }) => include(args[0], ctx),

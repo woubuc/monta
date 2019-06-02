@@ -1,15 +1,17 @@
-dist: xenial
-
 language: node_js
-script: yarn test
-node_js:
-  - "8"
-  - "10"
-  - "12"
 cache: yarn
 
 jobs:
   include:
+    - stage: lint
+      script: yarn lint
+      node_js: "12"
+    - stage: test
+      script: yarn test
+      node_js:
+        - "8"
+        - "10"
+        - "12"
     - stage: coverage
       script: yarn coverage
       node_js: "12"

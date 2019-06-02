@@ -58,7 +58,7 @@ export default class Lexer {
 		return this.tokens.filter(t => t.value.length > 0);
 	}
 
-	private parseCodeBlock() {
+	private parseCodeBlock() : void {
 		this.skipWhitespace();
 
 		if (this.source.peekMatch(':else:')) {
@@ -196,7 +196,7 @@ export default class Lexer {
 		return value;
 	}
 
-	private skipWhitespace() {
+	private skipWhitespace() : void {
 		while (this.source.hasNext()) {
 			const peek = this.source.peek();
 			if (!peek) return;

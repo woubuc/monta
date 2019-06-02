@@ -6,20 +6,20 @@ import { collectOptions, MontaOptions } from './Options';
 export class Internal {
 
 	/** Will resolve when Monta is fully loaded */
-	public readonly load: Promise<void>;
+	public readonly load : Promise<void>;
 
 	/** Renderer for this Monta instance */
-	public renderer!: Renderer;
+	public renderer! : Renderer;
 
 	/** The provided configuration options */
-	public options!: MontaOptions;
+	public options! : MontaOptions;
 
 	/**
 	 * Initialises the internal Monta instance
 	 *
 	 * @param options - The options passed to Monta
 	 */
-	constructor(options?: Partial<MontaOptions>) {
+	public constructor(options ?: Partial<MontaOptions>) {
 		this.load = new Promise(async (resolve) => {
 			await loadPlugins();
 

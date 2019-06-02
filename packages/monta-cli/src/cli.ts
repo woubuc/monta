@@ -5,11 +5,11 @@ import { ensureDir, writeFile } from 'fs-extra';
 import Monta from 'monta';
 import { parseOptions } from './options';
 
-export async function cli(data : object, argv : string[]) {
+export async function cli(data : object, argv : string[]) : Promise<void> {
 	if (argv.includes('-v') || argv.includes('--version')) return;
 
 	if (argv.includes('-h') || argv.includes('--help')) {
-		console.log('USAGE:\nmonta <files..> [--out <outDir>] [--ext <extList>]');
+		console.log('USAGE:\nmonta <files..> [--out <outDir>] [--ext <extList>]'); // eslint-disable-line no-console
 		return;
 	}
 
@@ -30,7 +30,8 @@ export async function cli(data : object, argv : string[]) {
 
 		let basePath = '';
 		let i = 0;
-		while (true) {
+
+		while (true) { // eslint-disable-line no-constant-condition
 			for (const file of files) {
 				const first = file.split('/')[i];
 				if (!first || (basePath.length > 0 && first != basePath)) return parts.join('/') + '/';

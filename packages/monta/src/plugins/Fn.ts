@@ -17,22 +17,22 @@ export type Fn = (options : FnArgs) => Promise<any> | any;
  */
 export interface FnArgs {
 	/** Function arguments */
-	args: any[];
+	args : any[];
 
 	/** Current rendering context */
-	ctx: Context,
+	ctx : Context;
 
 	/** Current function node in the AST */
-	node : Node,
+	node : Node;
 
 	/** Input piped to function, or undefined */
-	input?: any;
+	input ?: any;
 
 	/** Block nodes, if the function has a block */
-	block? : Node[];
+	block ?: Node[];
 
 	/** Block nodes in the else block, if the function has an else block */
-	elseBlock? : Node[];
+	elseBlock ?: Node[];
 }
 
 /**
@@ -47,7 +47,7 @@ export interface FnConfig {
 	requiredArgs : number;
 }
 
-function register(target : FnMap, name : string, exec : Fn, config : Partial<FnConfig> = {}) {
+function register(target : FnMap, name : string, exec : Fn, config : Partial<FnConfig> = {}) : void {
 	target.set(name, {
 		exec,
 
@@ -60,20 +60,20 @@ function register(target : FnMap, name : string, exec : Fn, config : Partial<FnC
 	});
 }
 
-export function registerFn(name : string, exec : Fn, config? : Partial<FnConfig>) {
+export function registerFn(name : string, exec : Fn, config ?: Partial<FnConfig>) : void {
 	register(fns, name, exec, config);
 }
-export function registerPre(name : string, exec : Fn, config? : Partial<Exclude<FnConfig, 'pipeable'>>) {
+export function registerPre(name : string, exec : Fn, config ?: Partial<Exclude<FnConfig, 'pipeable'>>) : void {
 	register(pres, name, exec, config);
 }
-export function registerPost(name : string, exec : Fn, config? : Partial<Exclude<FnConfig, 'pipeable'>>) {
+export function registerPost(name : string, exec : Fn, config ?: Partial<Exclude<FnConfig, 'pipeable'>>) : void {
 	register(posts, name, exec, config);
 }
 
 
-export const hasFn = (name : string) => fns.has(name);
-export const hasPre = (name : string) => pres.has(name);
-export const hasPost = (name : string) => posts.has(name);
+export const hasFn = (name : string) : boolean => fns.has(name);
+export const hasPre = (name : string) : boolean => pres.has(name);
+export const hasPost = (name : string) : boolean => posts.has(name);
 
 async function exec(src : FnMap, name : string, args : FnArgs) : Promise<any> {
 	const fn = src.get(name);
@@ -81,6 +81,6 @@ async function exec(src : FnMap, name : string, args : FnArgs) : Promise<any> {
 
 	return Promise.resolve(fn.exec(args));
 }
-export const execFn = (name : string, args : FnArgs) => exec(fns, name, args);
-export const execPre = (name : string, args : FnArgs) => exec(pres, name, args);
-export const execPost = (name : string, args : FnArgs) => exec(posts, name, args);
+export const execFn = (name : string, args : FnArgs) : Promise<any> => exec(fns, name, args);
+export const execPre = (name : string, args : FnArgs) : Promise<any> => exec(pres, name, args);
+export const execPost = (name : string, args : FnArgs) : Promise<any> => exec(posts, name, args);

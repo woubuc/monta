@@ -5,6 +5,6 @@ import { TokenType } from './TokenType';
  * string value of one or more characters
  */
 export interface Token {
-	type: TokenType;
-	value: string;
+	type : TokenType;
+	value : string;
 }

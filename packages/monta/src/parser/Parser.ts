@@ -16,12 +16,13 @@ export enum NodeType {
 export class Node {
 	public type! : NodeType;
 
-	public value? : Token;
+	public value ?: Token;
 
-	public params? : Node[];
-	public children? : Node[];
-	public elseChildren? : Node[];
+	public params ?: Node[];
+	public children ?: Node[];
+	public elseChildren ?: Node[];
 }
+
 export interface NodeWithParams extends Node {
 	params : Node[];
 }
@@ -115,7 +116,7 @@ export default class Parser {
 			return {
 				type: NodeType.TemplateOutput,
 				params: [this.parseExpression(identifier)]
-			}
+			};
 		}
 
 		if (peek.type === TokenType.Pipe) {
@@ -185,7 +186,7 @@ export default class Parser {
 				tokens.push({
 					type: NodeType.TokenGroup,
 					params: this.parseBraceGroup(),
-				} as NodeWithParams);
+				});
 				continue;
 			}
 
