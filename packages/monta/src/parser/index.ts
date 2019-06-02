@@ -1,14 +1,15 @@
-import Parser, { Node, NodeType } from './Parser';
 import { readFile } from 'fs-extra';
+import path from 'path';
+
+import Parser, { Node, NodeType } from './Parser';
 import Lexer from './lexer/Lexer';
-import path from "path";
 
 /**
  * Parses a piece of template code
- * @param code        - The code to parse
- * @param includePath - Base path to use for include and extend functions
+ * @param templateRoot - Root directory
+ * @param code         - The code to parse
  */
-export async function parse(code : string, includePath : string) : Promise<Node[]> {
+export async function parse(templateRoot : string, code : string) : Promise<Node[]> {
 	// Parse template
 	const tokens = new Lexer().run(code);
 	let nodes = new Parser(tokens).run();
@@ -22,8 +23,8 @@ export async function parse(code : string, includePath : string) : Promise<Node[
 		const params = extendNode.params;
 		if (!params || !params[0] || !params[0].value) throw new Error('Missing function param for `extend` function');
 
-		const baseFile = path.join(includePath, params[0].value.value);
-		const baseNodes = await parseFile(baseFile);
+		const baseFile = path.resolve(templateRoot, params[0].value.value);
+		const baseNodes = await parseFile(templateRoot, baseFile);
 
 		// Extend will prepend all nodes of the base template to the current nodes array
 		nodes.unshift(...baseNodes);
@@ -34,11 +35,12 @@ export async function parse(code : string, includePath : string) : Promise<Node[
 
 /**
  * Parses a file containing template code
- * @param filePath - Path to the file
+ * @param templateRoot - Root directory
+ * @param filePath     - Path to the file
  */
-export async function parseFile(filePath : string) : Promise<Node[]> {
-	filePath = path.resolve(filePath);
+export async function parseFile(templateRoot : string, filePath : string) : Promise<Node[]> {
+	filePath = path.resolve(templateRoot, filePath);
 
 	const source = await readFile(filePath);
-	return parse(source.toString(), path.dirname(filePath));
+	return parse(templateRoot, source.toString());
 }

@@ -12,8 +12,9 @@ Project status: **experimental / early development**
 
 ## Why
 - Not indentation-based
-- Uses JS-like syntax
+- Uses JS-like functions
 - Inheritance (extends & blocks)
+- Pipe syntax
 - Templates are HTML
 
 ## How
@@ -30,24 +31,42 @@ Create a template file:
 
 Compile the template:
 ```javascript
-const { compileFile } = require('monta');
+const Monta = require('monta');
 
-const template = await compileFile('my-template.mt');
+const monta = new Monta();
+
+const render = await monta.compileFile('my-template.mt');
 ```
 
 Render your page:
 ```javascript
-const result = await template.render({ foo: 'bar' });
+const result = await render({ foo: 'bar' });
 
 console.log(result); // <p>bar</p>
+```
+
+Or do both in one go:
+```javascript
+const result = await monta.renderFile('my-template.mt', { foo: 'bar' });
+
+console.log(result); // <p>bar</p>
+```
+
+You can also compile and render plain code:
+```javascript
+monta.compile('<p>${ foo }</p>');
+monta.render('<p>${ foo }</p>', { foo: 'bar' });
 ```
 
 ### Use with Express
 ```javascript
 const express = require('express');
+const Monta = require('monta');
+
+const monta = new Monta({ templateRoot: './views' });
 
 const app = express();
-app.engine('mt', require('monta').express);
+app.engine('mt', monta.express);
 
 app.get('/', (req, res) => {
     res.render('my-template.mt', { foo: 'bar' });
@@ -94,7 +113,7 @@ ${ myVar | padRight(6) }
 See the [monta-cli](https://www.npmjs.com/package/monta-cli) package.
 
 ## Example
-`base.mt`:
+`views/base.mt`:
 ```html
 <html>
   <head>
@@ -112,7 +131,7 @@ See the [monta-cli](https://www.npmjs.com/package/monta-cli) package.
 </html>
 ```
 
-`page.mt`:
+`views/page.mt`:
 ```html
 ${ extends('base.html') }
 
@@ -121,17 +140,18 @@ ${ block('head'): }
 ${ :end }
 
 ${ body('body'): }
-  <p>Welcome to my site, ${ name }</p>
+  <p>Welcome to my site, ${ name | upper() }</p>
 ${ :end }
 ```
 
 `app.js`:
 ```javascript
-const { compileFile } = require('monta');
+const Monta = require('monta');
+
+const monta = new Monta({ templateRoot: './views' });
 
 (async function main() {
-  const template = await compileFile('page.mt');
-  const result = await template.render({
+  const result = await monta.renderFile('page.mt', {
     name: 'woubuc',
     year: 2019,
   });
@@ -148,7 +168,7 @@ Output:
   </head>
 <body>
   <main>
-    <p>Welcome to my site, woubuc</p>
+    <p>Welcome to my site, WOUBUC</p>
   </main>
 
   <footer>Copyright 2019</footer>
@@ -156,7 +176,7 @@ Output:
 </html>
 ```
 
-## Why Monta
+## Why's it called Monta?
 Uninspired as I was, I used 
 [this](https://mrsharpoblunto.github.io/foswig.js/) to find a name for 
 the project, and Monta was the first name that I didn't hate _and_ that

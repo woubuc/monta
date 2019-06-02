@@ -8,6 +8,9 @@ export interface CliOptions {
 	/** List of globs to load */
 	globs : string[];
 
+	/** Base path for templates */
+	root : string;
+
 	/** Output directory */
 	out : string;
 
@@ -34,7 +37,8 @@ export function parseOptions(argv : string[]) : CliOptions {
 
 	return {
 		globs: args._,
-		out: path.resolve(args.out ? args.out : DEFAULT_OUT),
+		root: path.resolve(args.root || process.cwd()),
+		out: path.resolve(args.out || DEFAULT_OUT),
 		extensions: getExt(args.ext),
 		verbose: !!args.verbose,
 	};

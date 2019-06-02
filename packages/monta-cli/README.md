@@ -40,6 +40,15 @@ Will result in:
 <p>bar</p>
 ```
 
+## Root
+Set the template root directory by providing the `--root` argument.
+If omitted, Monta CLI will use the current working directory to
+resolve file paths.
+
+```
+monta views/**/*.mt --root ./views
+```
+
 ## Output Directory
 You can define a different output directory by providing the `--out`
 argument.

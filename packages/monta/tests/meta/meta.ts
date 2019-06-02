@@ -1,20 +1,24 @@
-import { compileFile } from '../../src';
-import path from "path";
+import path from 'path';
+
+import Monta from '../../src';
 
 test('file', async () => {
-	const template = await compileFile(path.join(__dirname, 'file.mt'));
+	const monta = new Monta({ templateRoot: __dirname });
 
-	expect(await template.render()).toBe(`<p>${ path.join(__dirname, 'file.mt') }</p>`);
+	const result = await monta.renderFile('file.mt');
+	expect(result).toBe(`<p>${ path.join(__dirname, 'file.mt') }</p>`);
 });
 
 test('filename.mt', async () => {
-	const template = await compileFile(path.join(__dirname, 'filename.mt'));
+	const monta = new Monta({ templateRoot: __dirname });
 
-	expect(await template.render()).toBe('<p>filename.mt</p>');
+	const result = await monta.renderFile('filename.mt');
+	expect(result).toBe('<p>filename.mt</p>');
 });
 
 test('path', async () => {
-	const template = await compileFile(path.join(__dirname, 'path.mt'));
+	const monta = new Monta({ templateRoot: __dirname });
 
-	expect(await template.render()).toBe(`<p>${ __dirname }</p>`);
+	const result = await monta.renderFile('path.mt');
+	expect(result).toBe(`<p>${ __dirname }</p>`);
 });

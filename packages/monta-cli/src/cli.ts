@@ -2,7 +2,7 @@ import path from 'path';
 import globby from 'globby';
 import { ensureDir, writeFile } from 'fs-extra';
 
-import { compileFile } from 'monta';
+import Monta from 'monta';
 import { parseOptions } from './options';
 
 export async function cli(data : object, argv : string[]) {
@@ -14,6 +14,8 @@ export async function cli(data : object, argv : string[]) {
 	}
 
 	const options = parseOptions(argv);
+
+	const monta = new Monta({ templateRoot: options.root });
 
 	const outDir = path.resolve(options.out);
 	await ensureDir(outDir);
@@ -47,7 +49,7 @@ export async function cli(data : object, argv : string[]) {
 		const inFile = path.join(basePath, file);
 		const outFile = path.join(outDir, path.parse(file).name + '.html');
 
-		const output = await compileFile(inFile);
-		await writeFile(outFile, await output.render(data));
+		const output = await monta.renderFile(inFile, data);
+		await writeFile(outFile, output);
 	}
 }

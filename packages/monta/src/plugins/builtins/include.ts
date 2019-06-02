@@ -4,8 +4,8 @@ import { parseFile } from '../../parser';
 import { Context, Node } from '../../';
 
 function include(fileName : string, ctx : Context) : Promise<Node[]> {
-	const filePath = path.resolve(ctx.meta.path, fileName);
-	return parseFile(filePath);
+	const filePath = path.resolve(ctx.options.templateRoot, ctx.meta.path, fileName);
+	return parseFile(ctx.options.templateRoot, filePath);
 }
 
 export default function(plugin : MontaPlugin) {

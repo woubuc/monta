@@ -2,6 +2,7 @@ import { Node, NodeType } from './parser/Parser';
 import { Iterator } from './util/Iterator';
 import { Context } from './Context';
 import { execFn, execPost, execPre, FnArgs, hasFn, hasPost, hasPre } from './plugins/Fn';
+import { Internal } from './Internal';
 
 enum RenderStep { Pre, Fn, Post }
 
@@ -11,9 +12,7 @@ export class Renderer {
 
 	private output : Output = [];
 
-	constructor() {
-
-	}
+	constructor(_ : Internal) { }
 
 	public async render(nodes : Node[], ctx : Context) : Promise<string> {
 		this.output = nodes;

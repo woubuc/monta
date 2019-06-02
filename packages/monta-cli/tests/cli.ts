@@ -7,7 +7,7 @@ test('cli', async () => {
 	jest.setTimeout(10000);
 
 	const dir = await tmp.dir({ unsafeCleanup: true });
-	await cli({}, [path.join(__dirname, '*'), '--out', dir.path]);
+	await cli({}, [path.join(__dirname, '*'), '--out', dir.path, '--root', __dirname]);
 
 	const files = await readdir(dir.path);
 	expect(files).toHaveLength(2);
@@ -20,14 +20,14 @@ test('cli', async () => {
 	const bar = (await readFile(path.join(dir.path, 'bar.html'))).toString();
 	expect(bar).toBe('<html>\n<body>\n	<p>Bar</p>\n</body>\n</html>');
 
-	dir.cleanup();
+	await dir.cleanup();
 });
 
 test('with input', async () => {
 	jest.setTimeout(10000);
 
 	const dir = await tmp.dir({ unsafeCleanup: true });
-	await cli({ foo: 'Foo' }, [path.join(__dirname, '*'), '--out', dir.path]);
+	await cli({ foo: 'Foo' }, [path.join(__dirname, '*'), '--out', dir.path, '--root', __dirname]);
 
 	const files = await readdir(dir.path);
 	expect(files).toContain('foo.html');
@@ -35,5 +35,5 @@ test('with input', async () => {
 	const foo = (await readFile(path.join(dir.path, 'foo.html'))).toString();
 	expect(foo).toBe('<html>\n<body>\n	<p>Foo</p>\n</body>\n</html>');
 
-	dir.cleanup();
+	await dir.cleanup();
 });

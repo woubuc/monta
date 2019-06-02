@@ -1,13 +1,8 @@
-import { compileFile } from '../../../src';
-import path from "path";
+import Monta from '../../../src';
 
 test('include', async () => {
-	const template = await compileFile(path.join(__dirname, 'base.mt'));
+	const monta = new Monta({ templateRoot: __dirname });
 
-	expect(await template.render()).toBe(
-		`<html>
-<body>
-	<p>I am included</p>
-</body>
-</html>`);
+	const result = await monta.renderFile('base.mt');
+	expect(result).toBe('<html>\n<body>\n\t<p>I am included</p>\n</body>\n</html>');
 });

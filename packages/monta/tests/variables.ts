@@ -1,21 +1,51 @@
-import { render } from '../src';
+import Monta from '../src';
 
 test('string', async () => {
-	expect(render('<p>${ foo }</p>', { foo: 'bar' })).resolves.toBe('<p>bar</p>');
+	const monta = new Monta();
+
+	const result = await monta.render(
+		'<p>${ foo }</p>',
+		{ foo: 'bar' },
+	);
+	expect(result).toBe('<p>bar</p>');
 });
 
 test('number', async () => {
-	expect(render('<p>${ foo }</p>', { foo: 42 })).resolves.toBe('<p>42</p>');
+	const monta = new Monta();
+
+	const result = await monta.render(
+		'<p>${ foo }</p>',
+		{ foo: 42 },
+	);
+	expect(result).toBe('<p>42</p>');
 });
 
 test('multiple variables', async () => {
-	expect(render('<p>${ foo }, ${ bar }, ${ baz }</p>', { foo: 'one', bar: 'two', baz: 3 })).resolves.toBe('<p>one, two, 3</p>');
+	const monta = new Monta();
+
+	const result = await monta.render(
+		'<p>${ foo }, ${ bar }, ${ baz }</p>',
+		{ foo: 'one', bar: 'two', baz: 3 },
+	);
+	expect(result).toBe('<p>one, two, 3</p>');
 });
 
 test('path', async () => {
-	expect(render('<p>${ foo.bar }</p>', { foo: { bar: 'baz' } })).resolves.toBe('<p>baz</p>');
+	const monta = new Monta();
+
+	const result = await monta.render(
+		'<p>${ foo.bar }</p>',
+		{ foo: { bar: 'baz' } },
+	);
+	expect(result).toBe('<p>baz</p>');
 });
 
 test('deep path', async () => {
-	expect(render('<p>${ foo.bar.baz }</p>', { foo: { bar: { baz: 'qux' } } })).resolves.toBe('<p>qux</p>');
+	const monta = new Monta();
+
+	const result = await monta.render(
+		'<p>${ foo.bar.baz }</p>',
+		{ foo: { bar: { baz: 'qux' } } },
+	);
+	expect(result).toBe('<p>qux</p>');
 });

@@ -9,6 +9,12 @@ export interface MontaPlugin {
 	registerPost : typeof registerPost;
 }
 
+const loadedPlugins : string[] = [];
+
+export function pluginLoaded(name : string) {
+	return loadedPlugins.includes(name);
+}
+
 export async function loadPlugins() {
 
 	const plugins = [
@@ -21,6 +27,7 @@ export async function loadPlugins() {
 		if (plugin.default) plugin = plugin.default;
 		if (typeof plugin !== 'function') throw new Error('Plugin ' + name + ' is not a function');
 
+		loadedPlugins.push(name.slice(13));
 		plugin({ registerFn, registerPre, registerPost } as MontaPlugin);
 	}
 }
