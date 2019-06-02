@@ -4,7 +4,7 @@
   "scripts": {
     "build": "lerna run build",
     "test": "yarn build && lerna run --parallel test",
-    "lint": "eslint --fix ./packages/*/src/**/*.ts -c .eslintrc.js",
+    "lint": "eslint ./packages/*/src/**/*.ts -c .eslintrc.js",
     "coverage": "yarn build && lerna run --parallel coverage && codecov",
     "postinstall": "lerna bootstrap"
   },
