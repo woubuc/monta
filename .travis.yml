@@ -1,18 +1,17 @@
 language: node_js
 cache: yarn
 
+script: yarn test
 node_js:
   - "8"
-  - "10"
+  - "lts/*"
   - "node"
 
 jobs:
   include:
     - stage: lint
       script: yarn lint
-      node_js: "node"
-    - stage: test
-      script: yarn test
+      node_js: "lts/*"
     - stage: coverage
       script: yarn coverage
-      node_js: "node"
+      node_js: "lts/*"
