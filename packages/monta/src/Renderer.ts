@@ -6,7 +6,7 @@ import { Internal } from './Internal';
 
 enum RenderStep { Pre, Fn, Post }
 
-type Output = (string | Node)[];
+type Output = (string | number | boolean | Node)[];
 
 export class Renderer {
 
@@ -56,8 +56,8 @@ export class Renderer {
 		while (source.hasNext()) {
 			const node = source.next();
 
-			if (typeof node === 'string') {
-				push(node);
+			if (typeof node === 'string' || typeof node === 'number' || typeof node === 'boolean') {
+				push(node.toString());
 				continue;
 			}
 
