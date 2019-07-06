@@ -49,3 +49,23 @@ test('deep path', async () => {
 	);
 	expect(result).toBe('<p>qux</p>');
 });
+
+test('this', async () => {
+	const monta = new Monta();
+
+	const result = await monta.render(
+		'<p>${ this }</p>',
+		'hello world',
+	);
+	expect(result).toBe('<p>hello world</p>');
+});
+
+test('.', async () => {
+	const monta = new Monta();
+
+	const result = await monta.render(
+		'<p>${ . }</p>',
+		'hello world',
+	);
+	expect(result).toBe('<p>hello world</p>');
+});

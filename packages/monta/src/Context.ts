@@ -38,18 +38,18 @@ export class Context {
 	private readonly root : Context;
 	private readonly parent ?: Context;
 
-	private readonly data : Record<string, any>;
+	private readonly data : any;
 	public meta : ContextMetaData;
 
 	private readonly functionData : Map<string, any>;
 	public options : MontaOptions;
 
 	public constructor(options : MontaOptions);
-	public constructor(options : MontaOptions, data : Record<string, any>);
-	public constructor(options : MontaOptions, data : Record<string, any>, parent : Context);
-	public constructor(options : MontaOptions, data : Record<string, any>, meta : ContextMeta);
-	public constructor(options : MontaOptions, data : Record<string, any>, parent : Context, meta : ContextMeta);
-	public constructor(options : MontaOptions, data : Record<string, any> = {}, parentOrMeta ?: Context | ContextMeta, meta ?: ContextMeta) {
+	public constructor(options : MontaOptions, data : any);
+	public constructor(options : MontaOptions, data : any, parent : Context);
+	public constructor(options : MontaOptions, data : any, meta : ContextMeta);
+	public constructor(options : MontaOptions, data : any, parent : Context, meta : ContextMeta);
+	public constructor(options : MontaOptions, data : any = {}, parentOrMeta ?: Context | ContextMeta, meta ?: ContextMeta) {
 		this.options = options;
 		this.data = data;
 
@@ -97,12 +97,23 @@ export class Context {
 		return new Context(this.options, this.getDataPath(path), this);
 	}
 
+	public getCustomContext(data : Record<string, any>) : Context {
+		return new Context(this.options, data, this);
+	}
+
 	private getDataPath(path : string) : any {
-		if (path === '.') return this.data;
+		console.log('Getting path', path, 'of data', this.data);
+		if (path === '.' || path === 'this') return this.data;
+
+		if (typeof this.data !== 'object') throw new Error(`Cannot get property '${ path }' of primitive value '${ this.data }'`);
 
 		let data : any = this.data;
 
 		let keys = path.split('.');
+
+		if (keys[0] === 'this' || keys[0] === '') {
+			keys.shift();
+		}
 
 		if (keys[0] === '$meta') {
 			data = this.meta;

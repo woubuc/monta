@@ -101,6 +101,11 @@ ${ :end }
 <!-- Include another template file (in-place) -->
 ${ include('otherTemplate.mt') }
 
+<!-- Array iteration -->
+${ myArr | foreach(): }
+  <p>${ this }</p>
+${ :end }
+
 <!-- String operations -->
 ${ myVar | trim() }
 ${ myVar | upper() }

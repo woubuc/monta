@@ -2,7 +2,7 @@ import { StringIterator } from '../../util/StringIterator';
 import { TokenType } from './TokenType';
 import { Token } from './Token';
 
-const KEYWORD_START = /[a-zA-Z_$]/;
+const KEYWORD_START = /[a-zA-Z_$.]/;
 const KEYWORD = /[a-zA-Z0-9_$.]/;
 const STRING_DELIMITERS = Object.freeze([`'`, `"`]);
 const NUMBER_START = /[0-9.]/;
@@ -139,7 +139,9 @@ export default class Lexer {
 				continue;
 			}
 
-			if (NUMBER_START.test(next)) {
+			// Both numbers and variables / keywords can start with `.` but only numbers can have a number directly after
+			if (NUMBER_START.test(next)
+				&& (next !== '.' || Number.isFinite(parseInt(this.source.peek() || '', 10)))) {
 				this.tokens.push({ type: TokenType.NumberLiteral, value: this.getNumberLiteral(next) });
 				continue;
 			}

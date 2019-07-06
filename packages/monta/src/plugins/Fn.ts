@@ -17,7 +17,7 @@ export type Fn = (options : FnArgs) => Promise<any> | any;
  */
 export interface FnArgs {
 	/** Function arguments */
-	args : any[];
+	args : FnInput[];
 
 	/** Current rendering context */
 	ctx : Context;
@@ -26,13 +26,24 @@ export interface FnArgs {
 	node : Node;
 
 	/** Input piped to function, or undefined */
-	input ?: any;
+	input ?: FnInput;
 
 	/** Block nodes, if the function has a block */
 	block ?: Node[];
 
 	/** Block nodes in the else block, if the function has an else block */
 	elseBlock ?: Node[];
+}
+
+/**
+ * An input value (function argument or piped) given to a function
+ */
+export interface FnInput {
+	/** Identifier or undefined if literal value was passed */
+	ident ?: string;
+
+	/** The value */
+	value : any;
 }
 
 /**
@@ -60,9 +71,9 @@ function register(target : FnMap, name : string, exec : Fn, config : Partial<FnC
 	});
 }
 
-export function registerFn(name : string, exec : Fn, config ?: Partial<FnConfig>) : void {
+export const registerFn = (name : string, exec : Fn, config ?: Partial<FnConfig>) : void => {
 	register(fns, name, exec, config);
-}
+};
 export function registerPre(name : string, exec : Fn, config ?: Partial<Exclude<FnConfig, 'pipeable'>>) : void {
 	register(pres, name, exec, config);
 }

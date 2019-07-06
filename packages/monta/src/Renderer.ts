@@ -1,7 +1,7 @@
 import { Node, NodeType } from './parser/Parser';
 import { Iterator } from './util/Iterator';
 import { Context } from './Context';
-import { execFn, execPost, execPre, FnArgs, hasFn, hasPost, hasPre } from './plugins/Fn';
+import { execFn, execPost, execPre, FnArgs, FnInput, hasFn, hasPost, hasPre } from './plugins/Fn';
 import { Internal } from './Internal';
 
 enum RenderStep { Pre, Fn, Post }
@@ -11,6 +11,7 @@ type Output = (string | Node)[];
 export class Renderer {
 
 	private output : Output = [];
+	private currentRenderStepDone : boolean = true;
 
 	public constructor(_ : Internal) {
 	}
@@ -19,9 +20,15 @@ export class Renderer {
 		this.output = nodes;
 
 		while (true) { // eslint-disable-line no-constant-condition
-			if (!await this.renderPass(RenderStep.Pre, ctx)) continue;
-			if (!await this.renderPass(RenderStep.Fn, ctx)) continue;
-			if (!await this.renderPass(RenderStep.Post, ctx)) continue;
+			this.output = await this.renderPass(this.output, RenderStep.Pre, ctx);
+			if (!this.currentRenderStepDone) continue;
+
+			this.output = await this.renderPass(this.output, RenderStep.Fn, ctx);
+			if (!this.currentRenderStepDone) continue;
+
+			this.output = await this.renderPass(this.output, RenderStep.Post, ctx);
+			if (!this.currentRenderStepDone) continue;
+
 			if (!this.output.every(c => typeof c === 'string')) continue;
 			break;
 		}
@@ -35,16 +42,16 @@ export class Renderer {
 			.join('\n');
 	}
 
-	private async renderPass(step : RenderStep, ctx : Context) : Promise<boolean> {
+	private async renderPass(nodes : Output, step : RenderStep, ctx : Context) : Promise<Output> {
 		const output : Output = [];
 		const push = (data : Output | string | Node) : void => {
 			if (Array.isArray(data)) output.push(...data);
 			else output.push(data);
 		};
 
-		const source = new Iterator(this.output);
+		const source = new Iterator(nodes);
 
-		let stepFnDone = true;
+		this.currentRenderStepDone = true;
 
 		while (source.hasNext()) {
 			const node = source.next();
@@ -79,17 +86,19 @@ export class Renderer {
 				}
 
 				case NodeType.PipeSequence: {
-					let lastValue : any = undefined;
+					let lastValue : FnInput = { value: undefined };
 					for (const next of node.params as Node[]) {
 
 						if (next.type === NodeType.Variable) {
 							if (!next.value) throw new Error('Variable node without value');
-							lastValue = ctx.getValue(next.value.value);
+							lastValue.ident = next.value.value;
+							lastValue.value = ctx.getValue(next.value.value);
 							continue;
 						}
 
 						if (next.type === NodeType.LiteralValue) {
-							lastValue = this.getValue(next, ctx);
+							lastValue.ident = undefined;
+							lastValue.value = this.getValue(next, ctx);
 							continue;
 						}
 
@@ -97,8 +106,9 @@ export class Renderer {
 						if (next.type === NodeType.Function) {
 							const output = await this.execFunction(step, next, ctx, lastValue);
 							if (output != null) {
-								lastValue = output;
-								stepFnDone = false;
+								lastValue.ident = undefined;
+								lastValue.value = output;
+								this.currentRenderStepDone = false;
 							}
 							continue;
 						}
@@ -106,19 +116,25 @@ export class Renderer {
 						throw new Error('Unexpected node: ' + (node.value ? node.value.value : ''));
 					}
 
-					push(lastValue);
+					push(lastValue.value);
 
 					break;
 				}
+
+				case NodeType.ScopedGroup:
+					if (!node.ctx) throw new Error('No scope set for scoped group');
+					if (!node.children) throw new Error('No nodes in scoped group');
+
+					push(await this.renderPass(node.children, step, node.ctx));
+
+					break;
 
 				default:
 					throw new Error('Unhandled node: ' + require('util').inspect(node) + ' (not implemented?)');
 			}
 		}
 
-		this.output = output;
-
-		return stepFnDone;
+		return output;
 	}
 
 	private getValue(node : Node, ctx : Context) : string {
@@ -138,7 +154,7 @@ export class Renderer {
 		throw new Error('Unknown value type: ' + node.type);
 	}
 
-	private async execFunction(step : RenderStep, node : Node, ctx : Context, input ?: any) : Promise<string | Node | null> {
+	private async execFunction(step : RenderStep, node : Node, ctx : Context, input ?: FnInput) : Promise<string | Node | null> {
 		if (!node.value) throw new Error('Variable node without value');
 		const name = node.value.value;
 
@@ -151,7 +167,12 @@ export class Renderer {
 			for (const param of node.params) {
 				if (!param.value) continue;
 				if (param.type === NodeType.LiteralValue) {
-					params.push(param.value.value);
+					params.push({ value: param.value.value });
+				} else if (param.type === NodeType.Variable) {
+					params.push({
+						ident: param.value.value,
+						value: ctx.getValue(param.value.value),
+					});
 				}
 			}
 		}

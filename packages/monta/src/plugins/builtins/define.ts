@@ -19,15 +19,15 @@ function blockFn(name : string, block : Node[], ctx : Context) : Node[] {
 export default function(plugin : MontaPlugin) : void {
 
 	plugin.registerPre('define',
-		({ node, ctx, args, block }) => definePre(args[0], node, block || [], ctx),
+		({ node, ctx, args, block }) => definePre(args[0].value, node, block || [], ctx),
 		{ requiredArgs: 1 });
 
 	plugin.registerPost('define',
-		({ ctx, args }) => definePost(args[0], ctx),
+		({ ctx, args }) => definePost(args[0].value, ctx),
 		{ requiredArgs: 1 });
 
 	plugin.registerFn('block',
-		({ ctx, args, block }) => blockFn(args[0], block as Node[], ctx),
+		({ ctx, args, block }) => blockFn(args[0].value, block as Node[], ctx),
 		{ requiredArgs: 1, block: true });
 
 }

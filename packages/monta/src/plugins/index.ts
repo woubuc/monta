@@ -1,7 +1,12 @@
 import root from 'app-root-path';
 import { registerFn, registerPost, registerPre } from './Fn';
 
-const BUILTINS = ['define', 'include', 'stringFn'];
+const BUILTINS = [
+	'define',
+	'foreach',
+	'include',
+	'stringFn'
+];
 
 export interface MontaPlugin {
 	registerFn : typeof registerFn;

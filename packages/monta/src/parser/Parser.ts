@@ -1,6 +1,7 @@
 import { Iterator } from '../util/Iterator';
 import { TokenType } from './lexer/TokenType';
 import { Token } from './lexer/Token';
+import { Context } from '../Context';
 
 export enum NodeType {
 	TemplateOutput,
@@ -11,11 +12,13 @@ export enum NodeType {
 	Variable,
 	Operator,
 	LiteralValue,
+	ScopedGroup,
 }
 
 export class Node {
 	public type! : NodeType;
 
+	public ctx ?: Context;
 	public value ?: Token;
 
 	public params ?: Node[];

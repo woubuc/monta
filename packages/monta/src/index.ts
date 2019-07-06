@@ -54,7 +54,7 @@ export default class Monta {
 	 * @param code - The code to render
 	 * @param data - Data to use in the template
 	 */
-	public async render(code : string, data : Record<string, any> = {}) : Promise<string> {
+	public async render(code : string, data : any = {}) : Promise<string> {
 		const render = await this.compile(code);
 		return render(data);
 	}
@@ -67,7 +67,7 @@ export default class Monta {
 	 * @param filePath - Path to the file
 	 * @param data     - Data to use in the template
 	 */
-	public async renderFile(filePath : string, data : Record<string, any> = {}) : Promise<string> {
+	public async renderFile(filePath : string, data : any = {}) : Promise<string> {
 		const render = await this.compileFile(filePath);
 		return render(data);
 	}
@@ -79,7 +79,7 @@ export default class Monta {
 	 * @param data     - Template data
 	 * @param callback - Callback function to be called when the template has been rendered
 	 */
-	public async express(filePath : string, data : Record<string, any>, callback : (err : any, result : string) => void) : Promise<void> {
+	public async express(filePath : string, data : any, callback : (err : any, result : string) => void) : Promise<void> {
 		const result = await this.renderFile(filePath, data);
 		callback(null, result);
 	}

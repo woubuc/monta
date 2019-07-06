@@ -19,6 +19,7 @@
   },
   "keywords": [
     "cli",
+    "command-line",
     "template",
     "html",
     "generator"

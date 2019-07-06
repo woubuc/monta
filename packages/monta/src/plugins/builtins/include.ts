@@ -11,7 +11,7 @@ function include(fileName : string, ctx : Context) : Promise<Node[]> {
 export default function(plugin : MontaPlugin) : void {
 
 	plugin.registerPre('include',
-		({ args, ctx }) => include(args[0], ctx),
+		({ args, ctx }) => include(args[0].value, ctx),
 		{ requiredArgs: 1 });
 
 }
