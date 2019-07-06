@@ -103,6 +103,8 @@ ${ include('otherTemplate.mt') }
 
 <!-- Array iteration -->
 ${ myArr | foreach(): }
+  <!-- Use ${ this } or ${ . } for the top-level 
+       object or variable in the current scope -->
   <p>${ this }</p>
 ${ :end }
 
