@@ -5,9 +5,6 @@ import { collectOptions, MontaOptions } from './Options';
 
 export class Internal {
 
-	/** Will resolve when Monta is fully loaded */
-	public readonly load : Promise<void>;
-
 	/** Renderer for this Monta instance */
 	public renderer! : Renderer;
 
@@ -20,15 +17,9 @@ export class Internal {
 	 * @param options - The options passed to Monta
 	 */
 	public constructor(options ?: Partial<MontaOptions>) {
-		this.load = new Promise(async (resolve) => {
-			await loadPlugins();
-
-			this.options = collectOptions(options);
-
-			this.renderer = new Renderer(this);
-
-			resolve();
-		});
+		loadPlugins();
+		this.options = collectOptions(options);
+		this.renderer = new Renderer(this);
 	}
 
 	/**
@@ -37,7 +28,6 @@ export class Internal {
 	 * @param code - The code to compile
 	 */
 	public async compile(code : string) : Promise<Template> {
-		await this.load;
 		return createTemplateFromCode(this, code);
 	}
 
@@ -47,7 +37,6 @@ export class Internal {
 	 * @param filePath - Path to the file, will be resolved from the configured include path
 	 */
 	public async compileFile(filePath : string) : Promise<Template> {
-		await this.load;
 		return createTemplateFromFile(this, filePath);
 	}
 }

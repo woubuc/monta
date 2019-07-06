@@ -20,25 +20,27 @@ export function pluginLoaded(name : string) : boolean {
 	return loadedPlugins.includes(name);
 }
 
-export async function loadPlugins() : Promise<void> {
+export function loadPlugins() : void {
 
 	const plugins = [
 		...BUILTINS.map(b => `./builtins/${ b }`),
-		...await discoverPlugins(),
+		...discoverPlugins(),
 	];
 
 	for (const name of plugins) {
-		let plugin = await import(name);
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		let plugin = require(name);
 		if (plugin.default) plugin = plugin.default;
-		if (typeof plugin !== 'function') throw new Error('Plugin ' + name + ' is not a function');
+		if (typeof plugin !== 'function') throw new Error(`Plugin ${ name } is '${ typeof plugin }', expected function.`);
 
 		loadedPlugins.push(name.slice(13));
 		plugin({ registerFn, registerPre, registerPost });
 	}
 }
 
-async function discoverPlugins() : Promise<string[]> {
-	const pkg = await import(root + '/package.json');
+function discoverPlugins() : string[] {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const pkg = require(root + '/package.json');
 
 	return Object.entries(pkg.dependencies)
 		.map(([name]) => name)
