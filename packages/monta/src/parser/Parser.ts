@@ -129,6 +129,13 @@ export default class Parser {
 			});
 		}
 
+		if (peek.type === TokenType.BraceClose) {
+			return {
+				type: NodeType.Variable,
+				value: identifier,
+			};
+		}
+
 		throw new Error('Unexpected identifier `' + identifier.value + '`');
 	}
 
@@ -163,15 +170,21 @@ export default class Parser {
 
 		let comma = null;
 		while (this.source.hasNext()) {
-			const next = this.source.next();
+			const peek = this.source.peek() as Token;
 
-			if (comma === null && next.type === TokenType.BraceClose) return tokens;
+			if (comma === null && peek.type === TokenType.BraceClose) {
+				this.source.skip();
+				return tokens;
+			}
 
 			if (comma) {
-				if (next.type === TokenType.BraceClose) return tokens;
+				if (peek.type === TokenType.BraceClose) {
+					this.source.skip();
+					return tokens;
+				}
 
-				if (next.type !== TokenType.Comma) {
-					throw new Error('Unexpected `' + next.value + '`, expected `,`');
+				if (peek.type !== TokenType.Comma) {
+					throw new Error('Unexpected `' + peek.value + '`, expected `,`');
 				}
 
 				comma = false;
@@ -180,12 +193,13 @@ export default class Parser {
 
 			comma = true;
 
-			if (next.type === TokenType.Identifier) {
+			if (peek.type === TokenType.Identifier) {
 				tokens.push(this.parseIdentifier());
 				continue;
 			}
 
-			if (next.type === TokenType.BraceOpen) {
+			if (peek.type === TokenType.BraceOpen) {
+				this.source.skip();
 				tokens.push({
 					type: NodeType.TokenGroup,
 					params: this.parseBraceGroup(),
@@ -193,7 +207,7 @@ export default class Parser {
 				continue;
 			}
 
-			tokens.push({ type: NodeType.LiteralValue, value: next });
+			tokens.push({ type: NodeType.LiteralValue, value: this.source.next() });
 		}
 
 		return tokens;

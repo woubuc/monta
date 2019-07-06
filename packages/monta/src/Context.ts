@@ -102,7 +102,6 @@ export class Context {
 	}
 
 	private getDataPath(path : string) : any {
-		console.log('Getting path', path, 'of data', this.data);
 		if (path === '.' || path === 'this') return this.data;
 
 		if (typeof this.data !== 'object') throw new Error(`Cannot get property '${ path }' of primitive value '${ this.data }'`);
