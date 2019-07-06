@@ -129,7 +129,7 @@ export default class Parser {
 			});
 		}
 
-		if (peek.type === TokenType.BraceClose) {
+		if (peek.type === TokenType.BraceClose || peek.type === TokenType.Comma) {
 			return {
 				type: NodeType.Variable,
 				value: identifier,
@@ -188,6 +188,8 @@ export default class Parser {
 				}
 
 				comma = false;
+				this.source.skip();
+
 				continue;
 			}
 
