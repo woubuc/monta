@@ -26,6 +26,10 @@ export async function cli(data : object, argv : string[]) : Promise<void> {
 	if (files.length === 0) throw new Error('No input files found');
 
 	const basePath = (() => {
+		if (files.length === 1) {
+			return path.dirname(files[0]);
+		}
+
 		const parts : string[] = [];
 
 		let basePath = '';

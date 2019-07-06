@@ -9,8 +9,6 @@ const dirname = () : string => __dirname.replace(/(\\)/g, '/');
 test('cli', async () => {
 	jest.setTimeout(10000);
 
-	console.log(dirname());
-
 	const dir = await tmp.dir({ unsafeCleanup: true });
 	await cli({}, [dirname() + '/*', '--out', dir.path, '--root', dirname()]);
 
