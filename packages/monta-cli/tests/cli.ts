@@ -3,11 +3,16 @@ import path from 'path';
 import { readdir, readFile } from 'fs-extra';
 import { cli } from '../src/cli';
 
+// Paths using backslashes (on Windows) need to be converted to forward slashes
+const dirname = () : string => __dirname.replace(/(\\)/g, '/');
+
 test('cli', async () => {
 	jest.setTimeout(10000);
 
+	console.log(dirname());
+
 	const dir = await tmp.dir({ unsafeCleanup: true });
-	await cli({}, [path.join(__dirname, '*'), '--out', dir.path, '--root', __dirname]);
+	await cli({}, [dirname() + '/*', '--out', dir.path, '--root', dirname()]);
 
 	const files = await readdir(dir.path);
 	expect(files).toHaveLength(2);
@@ -27,7 +32,7 @@ test('with input', async () => {
 	jest.setTimeout(10000);
 
 	const dir = await tmp.dir({ unsafeCleanup: true });
-	await cli({ foo: 'Foo' }, [path.join(__dirname, '*'), '--out', dir.path, '--root', __dirname]);
+	await cli({ foo: 'Foo' }, [dirname() + '/*', '--out', dir.path, '--root', dirname()]);
 
 	const files = await readdir(dir.path);
 	expect(files).toContain('foo.html');

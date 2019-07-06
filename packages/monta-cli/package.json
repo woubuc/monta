@@ -27,6 +27,7 @@
     "build": "rimraf lib/* && tsc",
     "prepublishOnly": "yarn build && yarn test",
     "test": "jest",
+    "lint": "eslint ./src/**/*.ts -c .eslintrc.js",
     "coverage": "rimraf coverage/* && jest --coverage"
   },
   "engines": {
@@ -41,7 +42,7 @@
   ],
   "dependencies": {
     "chalk": "~2.4.2",
-    "globby": "~9.2.0",
+    "globby": "~10.0.1",
     "minimist": "~1.2.0",
     "monta": "^0.3.0"
   }

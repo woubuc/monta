@@ -26,6 +26,7 @@
     "build": "rimraf lib/* && tsc",
     "prepublishOnly": "yarn build && yarn test",
     "test": "jest",
+    "lint": "eslint ./src/**/*.ts -c .eslintrc.js",
     "coverage": "rimraf coverage/* && jest --coverage"
   },
   "engines": {
@@ -35,8 +36,7 @@
     "app-root-path": "~2.2.1",
     "camelcase": "^5.3.1",
     "decamelize": "^3.2.0",
-    "fs-extra": "~8.0.1",
-    "globby": "~9.2.0"
+    "fs-extra": "~8.1.0"
   },
   "directories": {
     "lib": "lib",

@@ -22,6 +22,11 @@ The CLI will skip over any files starting with an underscore (e.g.
 `_base.mt`). You can use this to avoid compiling base templates that
 your other pages extend from.
 
+**Note**: Monta CLI uses fast-glob 3, which expects forward slashes `/`
+on all operating systems, including Windows. Backslashes `\` are used 
+for escaping characters. See the [fast-glob pattern syntax](https://github.com/mrmlnc/fast-glob#pattern-syntax) 
+for more information.
+
 ## Template Data
 You can pipe a JSON object into Monta CLI, and it will be used as the 
 template data in your templates.
