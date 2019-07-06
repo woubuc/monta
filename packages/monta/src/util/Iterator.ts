@@ -24,7 +24,7 @@ export class Iterator<T> {
 	 */
 	public next() : T {
 		if (this.cursor === this.source.length) throw new Error('Iterator is empty');
-		const next = this.source[this.cursor] as T;
+		const next = this.source[this.cursor];
 		this.cursor++;
 		return next;
 	}
