@@ -50,11 +50,35 @@ export interface FnInput {
  * Configuration options for registering a template function
  */
 export interface FnConfig {
+	/**
+	 * Whether this function can receive piped input
+	 *
+	 * @default true
+	 */
 	pipeable : boolean;
+
+	/**
+	 * Whether this function expects a block
+	 */
 	block : boolean;
+
+	/**
+	 * Whether this function expects an else block
+	 */
 	elseBlock : boolean;
 
+	/**
+	 * Maximum number of arguments passed
+	 *
+	 * If omitted, will be equal to `requiredArgs`
+	 */
 	maxArgs : number;
+
+	/**
+	 * Minimum number of arguments passed
+	 *
+	 * @default 0
+	 */
 	requiredArgs : number;
 }
 
@@ -62,7 +86,7 @@ function register(target : FnMap, name : string, exec : Fn, config : Partial<FnC
 	target.set(name, {
 		exec,
 
-		pipeable: target === fns && (config.pipeable || false),
+		pipeable: target === fns && config.pipeable !== false,
 		block: config.block || false,
 		elseBlock: config.elseBlock || false,
 

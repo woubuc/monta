@@ -25,6 +25,6 @@ export default function(plugin : MontaPlugin) : void {
 
 	plugin.registerPre('foreach',
 		({ args, input, ctx, block }) => foreach(input || args[0], ctx, block),
-		{ pipeable: true, requiredArgs: 1 });
+		{ requiredArgs: 1 });
 
 }

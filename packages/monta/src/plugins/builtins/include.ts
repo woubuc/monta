@@ -12,6 +12,6 @@ export default function(plugin : MontaPlugin) : void {
 
 	plugin.registerPre('include',
 		({ args, ctx }) => include(args[0].value, ctx),
-		{ requiredArgs: 1 });
+		{ pipeable: false, requiredArgs: 1 });
 
 }
