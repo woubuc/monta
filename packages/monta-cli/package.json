@@ -41,6 +41,7 @@
   "files": [
     "lib/*"
   ],
+  "types": "./lib/index.d.ts",
   "dependencies": {
     "chalk": "~2.4.2",
     "globby": "~10.0.1",
