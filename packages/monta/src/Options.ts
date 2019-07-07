@@ -1,4 +1,4 @@
-import decamelize from 'decamelize';
+import humps from 'humps';
 import { pluginLoaded } from './plugins';
 
 /**
@@ -17,7 +17,7 @@ export interface MontaOptions {
 	templateRoot : string;
 
 	/** The plugin options */
-	plugins : MontaPluginOptions;
+	plugins : Partial<MontaPluginOptions>;
 }
 
 /**
@@ -32,7 +32,7 @@ export function collectOptions(options : Partial<MontaOptions> = {}) : MontaOpti
 
 	const plugins = options.plugins || {};
 	for (const key of Object.keys(plugins)) {
-		const name = decamelize(key, '-');
+		const name = humps.decamelize(key, { separator: '-' });
 		if (!pluginLoaded(name)) throw new Error('Plugin options defined for non-existent plugin: ' + name);
 	}
 

@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/app-root-path": "~1.2.4",
     "@types/fs-extra": "~8.0.0",
+    "@types/humps": "^1.1.2",
     "@types/jest": "~24.0.15",
     "@types/minimatch": "^3.0.3",
     "@types/minimist": "~1.2.0",
