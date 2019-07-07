@@ -173,7 +173,7 @@ export default class Parser {
 			fn.children = this.parseBlock();
 
 			if ((this.source.peek() as Token).type === TokenType.BlockElse) {
-				this.source.skip();
+				this.source.skip(2);
 				fn.elseChildren = this.parseBlock();
 			}
 
