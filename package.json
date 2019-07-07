@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
-    "test": "yarn build && lerna run --parallel test",
+    "test": "yarn lint && yarn build && lerna bootstrap && lerna run --parallel test",
     "lint": "lerna run --parallel lint",
     "coverage": "yarn build && lerna run --parallel coverage && codecov",
     "postinstall": "lerna bootstrap"
