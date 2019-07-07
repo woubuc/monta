@@ -1,9 +1,7 @@
 import Monta from '../../src';
 
 test('foreach', async () => {
-	const monta = new Monta();
-
-	const render = await monta.compile('<p>${ foreach(arr): }${ this }${ :end }</p>');
+	const render = await new Monta().compile('<p>${ foreach(arr): }${ this }${ :end }</p>');
 
 	expect(await render({ arr: [1, 2, 3] })).toBe('<p>123</p>');
 	expect(await render({ arr: ['f', 'o', 'o'] })).toBe('<p>foo</p>');
@@ -11,9 +9,13 @@ test('foreach', async () => {
 });
 
 test('foreach (pipe)', async () => {
-	const monta = new Monta();
-
-	const render = await monta.compile('<p>${ arr | foreach(): }${ this }${ :end }</p>');
+	const render = await new Monta().compile('<p>${ arr | foreach(): }${ this }${ :end }</p>');
 
 	expect(await render({ arr: [1, 2, 3] })).toBe('<p>123</p>');
+});
+
+test('parent scope', async () => {
+	const render = await new Monta().compile('<p>${ foreach(arr): }${ $parent.foo }${ :end }</p>');
+
+	expect(await render({ foo: 'bar', arr: [1, 2, 3] })).toBe('<p>barbarbar</p>');
 });

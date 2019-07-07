@@ -104,8 +104,6 @@ export class Context {
 	private getDataPath(path : string) : any {
 		if (path === '.' || path === 'this') return this.data;
 
-		if (typeof this.data !== 'object') throw new Error(`Cannot get property '${ path }' of primitive value '${ this.data }'`);
-
 		let data : any = this.data;
 
 		let keys = path.split('.');
@@ -114,19 +112,30 @@ export class Context {
 			keys.shift();
 		}
 
+		let scopeChanged = false;
+
 		if (keys[0] === '$meta') {
+			scopeChanged = true;
 			data = this.meta;
 			keys.shift();
 		}
 
 		if (keys[0] === '$parent') {
-			data = this.parent;
+			if (!this.parent) throw new Error('Current scope has no parent scope');
+
+			scopeChanged = true;
+			data = this.parent.data;
 			keys.shift();
 		}
 
 		if (keys[0] === '$root') {
-			data = this.root;
+			scopeChanged = true;
+			data = this.root.data;
 			keys.shift();
+		}
+
+		if (!scopeChanged && typeof this.data !== 'object') {
+			throw new Error(`Cannot get property '${ path }' of primitive value '${ this.data }'`);
 		}
 
 		while (keys.length > 0) {
