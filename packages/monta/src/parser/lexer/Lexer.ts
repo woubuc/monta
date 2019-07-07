@@ -212,5 +212,4 @@ export default class Lexer {
 			else return;
 		}
 	}
-
 }

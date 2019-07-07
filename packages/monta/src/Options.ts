@@ -2,14 +2,6 @@ import humps from 'humps';
 import { pluginLoaded } from './plugins';
 
 /**
- * The plugin options that can be passed to Monta
- *
- * This interface is empty by default, but plugins
- * should add their configuration values to it.
- */
-export interface MontaPluginOptions { } // eslint-disable-line @typescript-eslint/no-empty-interface
-
-/**
  * The options that can be passed to Monta
  */
 export interface MontaOptions {
@@ -17,7 +9,7 @@ export interface MontaOptions {
 	templateRoot : string;
 
 	/** The plugin options */
-	plugins : Partial<MontaPluginOptions>;
+	plugins : Record<string, object>;
 }
 
 /**

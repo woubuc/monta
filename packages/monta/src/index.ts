@@ -90,4 +90,4 @@ export { Context, ContextMetaData } from './Context';
 export { Node } from './parser/Parser';
 export { MontaPlugin } from './plugins';
 export { Fn, FnConfig, FnArgs } from './plugins/Fn';
-export { MontaOptions, MontaPluginOptions } from './Options';
+export { MontaOptions } from './Options';

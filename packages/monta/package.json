@@ -20,7 +20,9 @@
     "template",
     "compiler",
     "view",
-    "html"
+    "html",
+    "parser",
+    "render"
   ],
   "scripts": {
     "build": "rimraf lib/* && tsc",
