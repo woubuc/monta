@@ -71,6 +71,15 @@ export interface FnConfig {
 	block : boolean;
 
 	/**
+	 * Whether this function requires a block of child nodes
+	 *
+	 * TODO validate this before calling function
+	 *
+	 * @default false
+	 */
+	blockRequired : boolean;
+
+	/**
 	 * Whether this function can receive an 'else' block of child nodes
 	 *
 	 * If true, `block` will be set to true as well
@@ -80,6 +89,15 @@ export interface FnConfig {
 	 * @default false
 	 */
 	elseBlock : boolean;
+
+	/**
+	 * Whether this function requires an 'else' block of child nodes
+	 *
+	 * TODO validate this before calling function
+	 *
+	 * @default false
+	 */
+	elseBlockRequired : boolean;
 
 	/**
 	 * Maximum number of arguments passed
@@ -106,7 +124,9 @@ function register(target : FnMap, name : string, exec : Fn, config : Partial<FnC
 
 		pipeable: target === fns && config.pipeable !== false,
 		block: config.block || config.elseBlock || false,
+		blockRequired: config.blockRequired || config.elseBlockRequired || false,
 		elseBlock: config.elseBlock || false,
+		elseBlockRequired: config.elseBlockRequired || false,
 
 		requiredArgs: config.requiredArgs || 0,
 		maxArgs: Math.max(config.maxArgs || 0, config.requiredArgs || 0),

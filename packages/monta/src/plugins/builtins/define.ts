@@ -26,10 +26,10 @@ export default function(plugin : MontaPlugin) : void {
 	 * the `block()` function.
 	 */
 
-	plugin.registerPre('define', definePre, { requiredArgs: 1, block: true });
-	plugin.registerPost('define', definePost, { requiredArgs: 1 });
+	plugin.registerPre('define', definePre, { pipeable: false, requiredArgs: 1, block: true });
+	plugin.registerPost('define', definePost, { pipeable: false, requiredArgs: 1, block: true });
 
-	plugin.registerFn('block', blockFn, { pipeable: false, requiredArgs: 1, block: true });
+	plugin.registerFn('block', blockFn, { pipeable: false, requiredArgs: 1, blockRequired: true });
 }
 
 /**

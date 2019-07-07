@@ -3,6 +3,14 @@ import { Context, Node } from '../..';
 import { NodeType } from '../../parser/Parser';
 import { FnInput } from '../Fn';
 
+export default function(plugin : MontaPlugin) : void {
+
+	plugin.registerPre('foreach',
+		({ args, input, ctx, block }) => foreach(input || args[0], ctx, block),
+		{ requiredArgs: 1, blockRequired: true });
+
+}
+
 function foreach(array : FnInput, ctx : Context, block ?: Node[]) : Node[] {
 	if (!block) throw new Error('Expected block in `foreach`');
 	if (!Array.isArray(array.value)) throw new Error('Expected data in `foreach` to be array');
@@ -19,12 +27,4 @@ function foreach(array : FnInput, ctx : Context, block ?: Node[]) : Node[] {
 	}
 
 	return output;
-}
-
-export default function(plugin : MontaPlugin) : void {
-
-	plugin.registerPre('foreach',
-		({ args, input, ctx, block }) => foreach(input || args[0], ctx, block),
-		{ requiredArgs: 1 });
-
 }
