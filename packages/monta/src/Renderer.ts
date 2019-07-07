@@ -61,12 +61,18 @@ export class Renderer {
 				continue;
 			}
 
+			if (!Node.isNode(node)) {
+				push(node.toString());
+				continue;
+			}
+
 			switch (node.type) {
 				case NodeType.TemplateOutput: {
 					if (!node.params) continue;
 
 					for (const param of node.params) {
-						push(this.getValue(param, ctx));
+						const value = this.getValue(param, ctx);
+						push(value);
 					}
 					break;
 				}
@@ -145,10 +151,12 @@ export class Renderer {
 
 		if (node.type === NodeType.Variable) {
 			if (!node.value) throw new Error('Variable node without value');
-			const value = ctx.getValue<string>(node.value.value);
+			const value = ctx.getValue<any>(node.value.value);
 
-			if (!value) return 'undefined';
-			return value.toString();
+			if (value === undefined) return 'undefined';
+			if (value === null) return 'null';
+
+			return value;
 		}
 
 		throw new Error('Unknown value type: ' + node.type);

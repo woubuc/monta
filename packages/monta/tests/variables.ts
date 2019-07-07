@@ -1,71 +1,45 @@
 import Monta from '../src';
 
-test('string', async () => {
-	const monta = new Monta();
+/* These tests verify the correctness of accessing variables
+ * in the current scope. They should not focus on verifying
+ * the correct output of said variables since this is done
+ * in `types.ts`, although some overlap is inevitable.
+ */
 
-	const result = await monta.render(
-		'<p>${ foo }</p>',
-		{ foo: 'bar' },
-	);
-	expect(result).toBe('<p>bar</p>');
-});
+test('single variable', async () => {
+	const render = await new Monta().compile('<p>${ foo }</p>');
 
-test('number', async () => {
-	const monta = new Monta();
-
-	const result = await monta.render(
-		'<p>${ foo }</p>',
-		{ foo: 42 },
-	);
-	expect(result).toBe('<p>42</p>');
+	expect(await render({ foo: 'bar' })).toBe('<p>bar</p>');
 });
 
 test('multiple variables', async () => {
-	const monta = new Monta();
+	const render = await new Monta().compile('<p>${ foo }, ${ bar }, ${ baz }</p>');
 
-	const result = await monta.render(
-		'<p>${ foo }, ${ bar }, ${ baz }</p>',
-		{ foo: 'one', bar: 'two', baz: 3 },
-	);
-	expect(result).toBe('<p>one, two, 3</p>');
+	expect(await render({ foo: 'one', bar: 'two', baz: 3 })).toBe('<p>one, two, 3</p>');
 });
 
 test('path', async () => {
-	const monta = new Monta();
+	const render = await new Monta().compile('<p>${ foo.bar }</p>');
 
-	const result = await monta.render(
-		'<p>${ foo.bar }</p>',
-		{ foo: { bar: 'baz' } },
-	);
-	expect(result).toBe('<p>baz</p>');
+	expect(await render({ foo: { bar: 'baz' } })).toBe('<p>baz</p>');
 });
 
 test('deep path', async () => {
-	const monta = new Monta();
+	const render = await new Monta().compile('<p>${ foo.bar.baz }</p>');
 
-	const result = await monta.render(
-		'<p>${ foo.bar.baz }</p>',
-		{ foo: { bar: { baz: 'qux' } } },
-	);
-	expect(result).toBe('<p>qux</p>');
+	expect(await render({ foo: { bar: { baz: 'qux' } } })).toBe('<p>qux</p>');
 });
 
 test('this', async () => {
-	const monta = new Monta();
+	const render = await  new Monta().compile('<p>${ this }</p>');
 
-	const result = await monta.render(
-		'<p>${ this }</p>',
-		'hello world',
-	);
-	expect(result).toBe('<p>hello world</p>');
+	expect(await render('hello world')).toBe('<p>hello world</p>');
+	expect(await render(42)).toBe('<p>42</p>');
 });
 
 test('.', async () => {
-	const monta = new Monta();
+	const render = await new Monta().compile('<p>${ . }</p>');
 
-	const result = await monta.render(
-		'<p>${ . }</p>',
-		'hello world',
-	);
-	expect(result).toBe('<p>hello world</p>');
+	expect(await render('hello world')).toBe('<p>hello world</p>');
+	expect(await render(42)).toBe('<p>42</p>');
 });

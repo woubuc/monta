@@ -1,9 +1,7 @@
 import Monta from '../../src';
 
 test('json', async () => {
-	const monta = new Monta();
-
-	const render = await monta.compile('<p>${ json(obj) }</p>');
+	const render = await new Monta().compile('<p>${ json(obj) }</p>');
 
 	expect(await render({ obj: { foo: 'bar' } })).toBe('<p>{"foo":"bar"}</p>');
 	expect(await render({ obj: { foo: { bar: 'baz' } } })).toBe('<p>{"foo":{"bar":"baz"}}</p>');
@@ -11,9 +9,7 @@ test('json', async () => {
 });
 
 test('json (pipe)', async () => {
-	const monta = new Monta();
-
-	const render = await monta.compile('<p>${ obj | json() }</p>');
+	const render = await new Monta().compile('<p>${ obj | json() }</p>');
 
 	expect(await render({ obj: { foo: 'bar' } })).toBe('<p>{"foo":"bar"}</p>');
 });

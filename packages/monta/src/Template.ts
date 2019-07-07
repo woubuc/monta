@@ -5,7 +5,7 @@ import { Context, ContextMeta } from './Context';
 import { Internal } from './Internal';
 import { parse, parseFile } from './parser';
 
-export type Template = (data ?: Record<string, any>) => Promise<string>;
+export type Template = (data ?: any) => Promise<string>;
 
 export async function createTemplateFromCode(monta : Internal, code : string) : Promise<Template> {
 	const nodes = await parse(monta.options.templateRoot, code);

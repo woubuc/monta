@@ -25,17 +25,17 @@ export default function(plugin : MontaPlugin) : void {
 
 function trim(str ?: string) : string {
 	if (!str) return '';
-	return str.trim();
+	return str.toString().trim();
 }
 
 function upper(str ?: string) : string {
 	if (!str) return '';
-	return str.toUpperCase();
+	return str.toString().toUpperCase();
 }
 
 function lower(str ?: string) : string {
 	if (!str) return '';
-	return str.toLowerCase();
+	return str.toString().toLowerCase();
 }
 
 function padRight(str ?: string, length ?: number) : string {

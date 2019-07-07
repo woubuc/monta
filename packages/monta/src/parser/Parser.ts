@@ -15,6 +15,8 @@ export enum NodeType {
 	ScopedGroup,
 }
 
+const nodeProps = Object.freeze(['type', 'ctx', 'value', 'params', 'children', 'elseChildren']);
+
 export class Node {
 	public type! : NodeType;
 
@@ -24,6 +26,22 @@ export class Node {
 	public params ?: Node[];
 	public children ?: Node[];
 	public elseChildren ?: Node[];
+
+	/**
+	 * Checks if a given object is a Node
+	 *
+	 * @param obj - The object to check
+	 *
+	 * @returns True if the object is a Node
+	 */
+	public static isNode(obj : any) : boolean {
+		if (typeof obj !== 'object') return false;
+		if (Array.isArray(obj)) return false;
+
+		const props = Object.getOwnPropertyNames(obj);
+		if (props.length > nodeProps.length) return false;
+		return props.every(k => nodeProps.includes(k));
+	}
 }
 
 export interface NodeWithParams extends Node {

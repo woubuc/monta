@@ -81,7 +81,6 @@ export class Context {
 
 	public getValue<T>(path : string) : T | undefined {
 		const value = this.getDataPath(path);
-		if (!value) return undefined;
 		return value as T;
 	}
 
@@ -139,9 +138,13 @@ export class Context {
 		}
 
 		while (keys.length > 0) {
-			const next : any = data[keys.shift() as string];
-			if (next == undefined) return null;
-			data = next;
+			const key = keys.shift() as string;
+
+			if (data === undefined) {
+				throw new Error(`Cannot get property '${ key }' of undefined`);
+			}
+
+			data = data[key];
 		}
 
 		return data;
