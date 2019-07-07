@@ -6,6 +6,7 @@ const BUILTINS = [
 	'define',
 	'foreach',
 	'include',
+	'json',
 	'stringFn'
 ];
 
