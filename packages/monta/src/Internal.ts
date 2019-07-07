@@ -16,8 +16,8 @@ export class Internal {
 	 *
 	 * @param options - The options passed to Monta
 	 */
-	public constructor(options ?: Partial<MontaOptions>) {
-		loadPlugins();
+	public constructor(options : Partial<MontaOptions> = {}) {
+		loadPlugins(options.plugins as Record<string, string> || []);
 		this.options = collectOptions(options);
 		this.renderer = new Renderer(this);
 	}
