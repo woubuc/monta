@@ -108,6 +108,26 @@ ${ myArr | foreach(): }
   <p>${ this }</p>
 ${ :end }
 
+<!-- Control flow -->
+${ myVar | eq("foo"): }
+  <p>Variable is "foo"</p>
+${ :end }
+
+${ myVar | eq("foo"): }
+  <p>Variable is "foo"</p>
+${ :else: }
+  <p>Variable is not "foo"</p>
+${ :end }
+
+<!-- All control flow functions -->
+${ myVar | eq("foo"): } <!-- Equal (strict) -->
+${ myVar | neq("foo"): } <!-- Not equal (strict) -->
+${ myVar | lt("foo"): } <!-- Less than -->
+${ myVar | gt("foo"): } <!-- Greater than -->
+
+<!-- Checks if a value exists in an array, or a key in an object -->
+${ myVar | has("foo"): }
+
 <!-- String operations -->
 ${ myVar | trim() }
 ${ myVar | upper() }

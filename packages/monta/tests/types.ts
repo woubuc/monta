@@ -1,9 +1,8 @@
 import Monta from '../src';
 
-/* These tests verify the correctness of the rendered
- * data of variables, depending on their type. They
- * should not focus on testing variable access, as
- * this is done in `variables.ts`.
+/* These tests verify the correctness of the rendered data
+ * and type of variables. They should not focus on testing
+ * variable access, as this is done in `variables.ts`.
  */
 
 test('string', async () => {
@@ -14,19 +13,29 @@ test('string', async () => {
 });
 
 test('number', async () => {
-	const render = await new Monta().compile('<p>${ num }</p>');
+	const monta = new Monta();
+
+	const render = await monta.compile('<p>${ num }</p>');
 
 	expect(await render({ num: 42 })).toBe('<p>42</p>');
 	expect(await render({ num: -1 })).toBe('<p>-1</p>');
 	expect(await render({ num: Infinity })).toBe('<p>Infinity</p>');
 	expect(await render({ num: NaN })).toBe('<p>NaN</p>');
+
+	const type = await monta.compile('<p>${ num | eq(2): }ok${ :end }</p>');
+	expect(await type({ num: 2 })).toBe('<p>ok</p>');
 });
 
 test('boolean', async () => {
-	const render = await new Monta().compile('<p>${ bool }</p>');
+	const monta = new Monta();
+
+	const render = await monta.compile('<p>${ bool }</p>');
 
 	expect(await render({ bool: true })).toBe('<p>true</p>');
 	expect(await render({ bool: false })).toBe('<p>false</p>');
+
+	const type = await monta.compile('<p>${ bool | eq(true): }ok${ :end }</p>');
+	expect(await type({ bool: true })).toBe('<p>ok</p>');
 });
 
 test('array', async () => {
