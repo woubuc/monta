@@ -34,6 +34,12 @@
   "engines": {
     "node": ">=8"
   },
+  "dependencies": {
+    "chalk": "~2.4.2",
+    "globby": "~10.0.1",
+    "minimist": "~1.2.0",
+    "monta": "^0.5.2"
+  },
   "directories": {
     "lib": "lib",
     "test": "tests"
@@ -41,11 +47,5 @@
   "files": [
     "lib/*"
   ],
-  "types": "./lib/index.d.ts",
-  "dependencies": {
-    "chalk": "~2.4.2",
-    "globby": "~10.0.1",
-    "minimist": "~1.2.0",
-    "monta": "^0.5.2"
-  }
+  "types": "./lib/index.d.ts"
 }
