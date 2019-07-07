@@ -79,6 +79,10 @@ export class Context {
 		this.functionData.set(key, value);
 	}
 
+	public hasData(key : string) : boolean {
+		return this.functionData.has(key);
+	}
+
 	public getValue<T>(path : string) : T | undefined {
 		const value = this.getDataPath(path);
 		return value as T;

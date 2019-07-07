@@ -53,17 +53,31 @@ export interface FnConfig {
 	/**
 	 * Whether this function can receive piped input
 	 *
+	 * Note: pre & post functions can never be pipeable
+	 *
+	 * TODO validate this before calling function
+	 *
 	 * @default true
 	 */
 	pipeable : boolean;
 
 	/**
-	 * Whether this function expects a block
+	 * Whether this function can receive a block of child nodes
+	 *
+	 * TODO validate this before calling function
+	 *
+	 * @default false
 	 */
 	block : boolean;
 
 	/**
-	 * Whether this function expects an else block
+	 * Whether this function can receive an 'else' block of child nodes
+	 *
+	 * If true, `block` will be set to true as well
+	 *
+	 * TODO validate this before calling function
+	 *
+	 * @default false
 	 */
 	elseBlock : boolean;
 
@@ -71,11 +85,15 @@ export interface FnConfig {
 	 * Maximum number of arguments passed
 	 *
 	 * If omitted, will be equal to `requiredArgs`
+	 *
+	 * TODO validate this before calling function
 	 */
 	maxArgs : number;
 
 	/**
 	 * Minimum number of arguments passed
+	 *
+	 * TODO validate this before calling function
 	 *
 	 * @default 0
 	 */
@@ -87,7 +105,7 @@ function register(target : FnMap, name : string, exec : Fn, config : Partial<FnC
 		exec,
 
 		pipeable: target === fns && config.pipeable !== false,
-		block: config.block || false,
+		block: config.block || config.elseBlock || false,
 		elseBlock: config.elseBlock || false,
 
 		requiredArgs: config.requiredArgs || 0,
