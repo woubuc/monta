@@ -24,9 +24,7 @@ export default class Lexer {
 
 	private tokens : Token[] = [];
 
-	public constructor() {
-
-	}
+	public constructor() { }
 
 	public run(html : string) : Token[] {
 		this.source = new StringIterator(html);
@@ -55,7 +53,14 @@ export default class Lexer {
 			this.tokens.push({ type: TokenType.PlainText, value: value });
 		}
 
-		return this.tokens.filter(t => t.value.length > 0);
+		return this.tokens
+			.filter(t => t.value.length > 0)
+			.map(t => {
+				if (t.type === TokenType.Identifier && t.value === 'true' || t.value === 'false') {
+					t.type = TokenType.BooleanLiteral;
+				}
+				return t;
+			});
 	}
 
 	private parseCodeBlock() : void {

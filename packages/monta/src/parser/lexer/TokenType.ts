@@ -20,4 +20,5 @@ export enum TokenType {
 
 	StringLiteral,
 	NumberLiteral,
+	BooleanLiteral,
 }

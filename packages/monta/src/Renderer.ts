@@ -3,6 +3,7 @@ import { Iterator } from './util/Iterator';
 import { Context } from './Context';
 import { execFn, execPost, execPre, FnArgs, FnInput, hasFn, hasPost, hasPre } from './plugins/Fn';
 import { Internal } from './Internal';
+import { TokenType } from './parser/lexer/TokenType';
 
 enum RenderStep { Pre, Fn, Post }
 
@@ -175,7 +176,13 @@ export class Renderer {
 			for (const param of node.params) {
 				if (!param.value) continue;
 				if (param.type === NodeType.LiteralValue) {
-					params.push({ value: param.value.value });
+					if (param.value.type === TokenType.NumberLiteral) {
+						params.push({ value: parseInt(param.value.value, 10) });
+					} else if (param.value.type === TokenType.BooleanLiteral) {
+						params.push({ value: param.value.value === 'true' });
+					} else {
+						params.push({ value: param.value.value });
+					}
 				} else if (param.type === NodeType.Variable) {
 					params.push({
 						ident: param.value.value,
