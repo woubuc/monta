@@ -2,7 +2,6 @@ import root from 'app-root-path';
 import { registerFn, registerPost, registerPre } from './Fn';
 
 const BUILTINS = [
-	'arrayFn',
 	'define',
 	'foreach',
 	'include',

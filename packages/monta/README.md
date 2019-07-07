@@ -108,10 +108,6 @@ ${ myArr | foreach(): }
   <p>${ this }</p>
 ${ :end }
 
-<!-- Array operations -->
-${ myArr | sort() }
-${ myArr | filter('foo*') } <!-- Keeps 'foo' & 'foobar' but not 'baz' -->
-
 <!-- String operations -->
 ${ myVar | trim() }
 ${ myVar | upper() }
