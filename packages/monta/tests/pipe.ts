@@ -22,3 +22,17 @@ test('multiple pipe', async () => {
 	expect(await render({ foo: '  bar '})).toBe('<p>BAR</p>');
 	expect(await render({ foo: 42 })).toBe('<p>42</p>');
 });
+
+test('function first', async () => {
+	const render = await new Monta().compile('<p>${ trim(foo) | upper() }</p>');
+
+	expect(await render({ foo: '  bar '})).toBe('<p>BAR</p>');
+	expect(await render({ foo: 42 })).toBe('<p>42</p>');
+});
+
+test('pipe to variable', async () => {
+	const render = await new Monta().compile('<p>${ trim(foo) | upper() | "foo" }</p>');
+
+	expect(await render({ foo: '  bar '})).toBe('<p>foo</p>');
+	expect(await render({ foo: 42 })).toBe('<p>foo</p>');
+});
