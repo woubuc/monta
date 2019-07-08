@@ -109,7 +109,6 @@ export default class Parser {
 
 			const next = this.source.next();
 			if (next.type === TokenType.CodeEnd) return nodes;
-
 		}
 
 		return nodes;
@@ -120,7 +119,17 @@ export default class Parser {
 		const peek = this.source.peek() as Token;
 
 		if (peek.type === TokenType.BraceOpen) {
-			return this.parseFunction(identifier);
+			const functionNode = this.parseFunction(identifier);
+
+			if (this.source.hasNext()) {
+				const nextPeek = this.source.peek() as Token;
+
+				if (nextPeek.type === TokenType.Pipe) {
+					return this.parsePipeSequence(functionNode);
+				}
+			}
+
+			return functionNode;
 		}
 
 		if (peek.type === TokenType.CodeEnd) {
