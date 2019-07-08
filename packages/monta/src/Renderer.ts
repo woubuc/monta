@@ -14,10 +14,10 @@ export class Renderer {
 	private output : Output = [];
 	private currentRenderStepDone : boolean = true;
 
-	public constructor(_ : Internal) {
-	}
+	public constructor(_ : Internal) { }
 
 	public async render(nodes : Node[], ctx : Context) : Promise<string> {
+
 		this.output = nodes;
 
 		while (true) { // eslint-disable-line no-constant-condition
@@ -195,7 +195,7 @@ export class Renderer {
 		const args : FnArgs = {
 			ctx,
 			node,
-			input,
+			input: (input && input.value) ? input : undefined,
 			args: params,
 			block: node.children,
 			elseBlock: node.elseChildren,
