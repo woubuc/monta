@@ -1,5 +1,5 @@
-import humps from 'humps';
-import { pluginLoaded } from './plugins';
+import root from 'app-root-path';
+import path from 'path';
 
 /**
  * The options that can be passed to Monta
@@ -23,16 +23,10 @@ export interface MontaOptions {
  */
 export function collectOptions(options : Partial<MontaOptions>) : MontaOptions {
 
-	const templateRoot = options.templateRoot || process.cwd();
-
-	const plugins = options.plugins || {};
+	const templateRoot = options.templateRoot || path.join(root.toString(), 'views');
 
 	const pluginOptions = options.pluginOptions || {};
-	for (const key of Object.keys(pluginOptions)) {
-		const name = humps.decamelize(key, { separator: '-' });
-		if (!pluginLoaded(name)) throw new Error('Plugin options defined for non-existent plugin: ' + name);
-	}
-
+	const plugins = options.plugins || {};
 
 	return { templateRoot, pluginOptions, plugins };
 }

@@ -1,4 +1,5 @@
 import root from 'app-root-path';
+import { decamelize } from 'humps';
 import { registerFn, registerPost, registerPre } from './Fn';
 
 const BUILTINS = [
@@ -14,6 +15,8 @@ export interface MontaPlugin {
 	registerFn : typeof registerFn;
 	registerPre : typeof registerPre;
 	registerPost : typeof registerPost;
+
+	options : Record<string, string>;
 }
 
 const loadedPlugins : string[] = [];
@@ -22,11 +25,11 @@ export function pluginLoaded(name : string) : boolean {
 	return loadedPlugins.includes(name);
 }
 
-export function loadPlugins(customPlugins : Record<string, string>) : void {
+export function loadPlugins(pluginOptions : Record<string, object>, customPlugins : Record<string, string>) : void {
 
 	const plugins : Record<string, string> = Object.assign({},
 		BUILTINS.reduce((acc : Record<string, string>, name) => {
-			acc[name] = `./builtins/${ name }`;
+			acc[`builtins/${ name }`] = `./builtins/${ name }`;
 			return acc;
 		}, {}),
 		discoverPlugins(),
@@ -39,10 +42,15 @@ export function loadPlugins(customPlugins : Record<string, string>) : void {
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		let plugin = require(path);
 		if (plugin.default) plugin = plugin.default;
-		if (typeof plugin !== 'function') throw new Error(`Plugin ${ name } is '${ typeof plugin }', expected function.`);
+
+		if (typeof plugin !== 'function') {
+			throw new Error(`Plugin ${ name } exported '${ typeof plugin }', expected function.`);
+		}
 
 		loadedPlugins.push(name);
-		plugin({ registerFn, registerPre, registerPost });
+
+		const options = pluginOptions[decamelize(name)] || {};
+		plugin({ registerFn, registerPre, registerPost, options });
 	}
 }
 

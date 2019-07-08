@@ -12,7 +12,6 @@ Project status: **experimental / early development**
 
 ## Why
 - Not indentation-based
-- Uses JS-like functions
 - Inheritance (extends & blocks)
 - Pipe syntax
 - Templates are HTML

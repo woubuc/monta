@@ -62,6 +62,15 @@ export interface FnConfig {
 	pipeable : boolean;
 
 	/**
+	 * Whether this function requires piped input
+	 *
+	 * TODO validate this before calling function
+	 *
+	 * @default false
+	 */
+	pipeRequired : boolean;
+
+	/**
 	 * Whether this function can receive a block of child nodes
 	 *
 	 * TODO validate this before calling function
@@ -122,7 +131,9 @@ function register(target : FnMap, name : string, exec : Fn, config : Partial<FnC
 	target.set(name, {
 		exec,
 
-		pipeable: target === fns && config.pipeable !== false,
+		pipeable: target === fns && (config.pipeRequired || config.pipeable !== false),
+		pipeRequired: target === fns && (config.pipeRequired || false),
+
 		block: config.block || config.elseBlock || false,
 		blockRequired: config.blockRequired || config.elseBlockRequired || false,
 		elseBlock: config.elseBlock || false,
