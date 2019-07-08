@@ -1,6 +1,6 @@
 import { FnArgs, MontaPlugin, Node } from '../..';
 
-export default function(plugin : MontaPlugin) : void {
+export default function(plugin : MontaPlugin<unknown>) : void {
 
 	/**
 	 * Helper to ease repetition, since all these functions

@@ -3,7 +3,7 @@ import { Context, Node } from '../..';
 import { NodeType } from '../../parser/Parser';
 import { FnInput } from '../Fn';
 
-export default function(plugin : MontaPlugin) : void {
+export default function(plugin : MontaPlugin<unknown>) : void {
 
 	plugin.registerPre('foreach',
 		({ args, input, ctx, block }) => foreach(input || args[0], ctx, block),

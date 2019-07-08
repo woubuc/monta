@@ -3,7 +3,7 @@ import path from "path";
 import { parseFile } from '../../parser';
 import { Context, Node } from '../../';
 
-export default function(plugin : MontaPlugin) : void {
+export default function(plugin : MontaPlugin<unknown>) : void {
 
 	plugin.registerPre('include',
 		({ args, ctx }) => include(args[0].value, ctx),

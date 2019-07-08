@@ -1,6 +1,6 @@
 import { MontaPlugin } from '../index';
 
-export default function(plugin : MontaPlugin) : void {
+export default function(plugin : MontaPlugin<unknown>) : void {
 
 	plugin.registerFn('trim',
 		({ args, input }) => trim(input ? input.value : args[0].value) ,

@@ -9,7 +9,7 @@ export interface MontaOptions {
 	templateRoot : string;
 
 	/** The plugin options */
-	pluginOptions : Record<string, object>;
+	pluginOptions : Record<string, any>;
 
 	/** Plugins to load. Shouldn't be used in most cases, Monta can detect plugins on its own */
 	plugins : Record<string, string>;

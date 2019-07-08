@@ -147,13 +147,12 @@ function register(target : FnMap, name : string, exec : Fn, config : Partial<FnC
 export const registerFn = (name : string, exec : Fn, config ?: Partial<FnConfig>) : void => {
 	register(fns, name, exec, config);
 };
-export function registerPre(name : string, exec : Fn, config ?: Partial<Exclude<FnConfig, 'pipeable'>>) : void {
+export function registerPre(name : string, exec : Fn, config ?: Partial<FnConfig>) : void {
 	register(pres, name, exec, config);
 }
-export function registerPost(name : string, exec : Fn, config ?: Partial<Exclude<FnConfig, 'pipeable'>>) : void {
+export function registerPost(name : string, exec : Fn, config ?: Partial<FnConfig>) : void {
 	register(posts, name, exec, config);
 }
-
 
 export const hasFn = (name : string) : boolean => fns.has(name);
 export const hasPre = (name : string) : boolean => pres.has(name);

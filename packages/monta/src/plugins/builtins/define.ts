@@ -17,7 +17,7 @@ import { FnInput } from '../Fn';
  * `${ block('blockName'): }my block content${ :end }`
  */
 
-export default function(plugin : MontaPlugin) : void {
+export default function(plugin : MontaPlugin<unknown>) : void {
 
 	/* The define function is called twice. First in the
 	 * `pre` step, where it initialises the block, and
