@@ -138,6 +138,29 @@ ${ myVar | padLeft(6) }
 ${ myVar | padRight(6) }
 ```
 
+## Plugins
+Monta is designed to be modular and extendable through plugins.
+
+To add a plugin to Monta, simply install it to the dependencies of your 
+project. Monta should discover it automatically when it's initialised.
+
+To add a plugin to Monta that it can't discover (e.g. because it's not 
+in the dependencies of the top-level `package.json` file), you can add
+the `plugins` object to the Monta options.
+
+```
+const monta = new Monta({
+  plugins: {
+    'plugin-name': 'path/to/custom/plugin',
+  }
+});
+```
+
+### List of Plugins
+- [resources](https://www.npmjs.com/package/monta-plugin-resources)
+
+If you've made a plugin, feel free to open a PR to add it to this list.
+
 ## CLI
 See the [monta-cli](https://www.npmjs.com/package/monta-cli) package.
 
