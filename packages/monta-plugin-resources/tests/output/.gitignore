@@ -1,0 +1,3 @@
+# This directory will be used by the tests to output files to, so ignore everything
+*
+!.gitignore

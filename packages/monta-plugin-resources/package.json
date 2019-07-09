@@ -1,0 +1,56 @@
+{
+  "name": "monta-plugin-resources",
+  "version": "0.5.2",
+  "description": "Provides a system to load, include and transform static assets and page resources",
+  "main": "lib/index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/woubuc/monta/tree/master/packages/monta-plugin-images#readme",
+  "contributors": [
+    "Wouter Buckens <wouter@epicteddy.com> (https://www.woubuc.be)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woubuc/monta.git"
+  },
+  "bugs": {
+    "url": "https://github.com/woubuc/monta/issues"
+  },
+  "keywords": [
+    "image",
+    "images",
+    "assets",
+    "templates",
+    "editing",
+    "resize",
+    "crop",
+    "functions"
+  ],
+  "scripts": {
+    "build": "rimraf lib/* && tsc",
+    "prepublishOnly": "yarn build && yarn test",
+    "test": "rimraf tests/output/* && jest",
+    "lint": "eslint ./src/**/*.ts -c .eslintrc.js",
+    "coverage": "rimraf coverage/* && jest --coverage"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "dependencies": {
+    "app-root-path": "^2.2.1",
+    "fs-extra": "^8.1.0"
+  },
+  "peerDependencies": {
+    "monta": "^0.5.2"
+  },
+  "devDependencies": {
+    "monta": "^0.5.2"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib/*"
+  ],
+  "types": "./lib/index.d.ts"
+}
