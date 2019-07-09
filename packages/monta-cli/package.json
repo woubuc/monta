@@ -1,6 +1,6 @@
 {
   "name": "monta-cli",
-  "version": "0.5.3",
+  "version": "0.5.5",
   "description": "Monta CLI utility",
   "bin": {
     "monta": "lib/index.js"
@@ -38,7 +38,7 @@
     "chalk": "~2.4.2",
     "globby": "~10.0.1",
     "minimist": "~1.2.0",
-    "monta": "^0.5.3"
+    "monta": "^0.5.5"
   },
   "directories": {
     "lib": "lib",
