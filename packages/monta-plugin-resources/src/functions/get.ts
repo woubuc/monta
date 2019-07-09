@@ -2,8 +2,10 @@ import globby from 'globby';
 
 import { FnArgs } from 'monta';
 
-import { Res, Resource } from '../Resource';
+import { Resource } from '../Resource';
 import { ResourcePlugin } from '../Options';
+import { createReadStream } from "fs";
+import path from "path";
 
 export default async function(this : ResourcePlugin, { input, args, ctx } : FnArgs) : Promise<Resource[]> {
 	const pattern = input ? input.value : args[0].value;
@@ -21,5 +23,7 @@ export default async function(this : ResourcePlugin, { input, args, ctx } : FnAr
 	// on the same file structure will always return the same array.
 	paths.sort();
 
-	return paths.map(path => new Res(ctx, path));
+	return paths.map(file => {
+		return new Resource(file, createReadStream(path.resolve(ctx.getPath(), file)));
+	});
 }

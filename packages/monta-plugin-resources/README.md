@@ -64,4 +64,11 @@ ${ :end }
 ${ get('*.(png|jpg)') | foreach(): }
   <img src="${ this | toUrl() ">
 ${ :end }
+
+<!-- Concatenate files -->
+${ get('*.css') | concat('styles.css') | toUrl() }
+
+<!-- Minify css or js files -->
+${ get('stylesheet.css') | minify() | toUrl() }
+${ get('script.js') | minify() | toUrl() }
 ```

@@ -21,7 +21,7 @@ test('pipe', async () => {
 test('glob', async () => {
 	const render = await createMonta().compile("${ get('*.(png|css)') }");
 
-	expect(await render()).toBe('[resource:image.png][resource:stylesheet.css]');
+	expect(await render()).toBe('[resource:image.png][resource:stylesheet.css][resource:stylesheet2.css]');
 });
 
 test('invalid path', async () => {

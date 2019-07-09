@@ -1,9 +1,9 @@
-import { Readable, Transform, PassThrough, Stream } from 'stream';
-import { createReadStream, createWriteStream } from 'fs-extra';
+import { Readable, Transform } from 'stream';
+import { createWriteStream } from 'fs-extra';
 import { createHash } from 'crypto';
 import path from 'path';
 
-import { Context } from 'monta';
+import { awaitEvt, cloneStream } from './utils/streamUtils';
 
 /**
  * An individual resource identifier
@@ -14,17 +14,17 @@ import { Context } from 'monta';
  * function, and can finally be finalised through the
  * `collect()` or `save()` functions.
  */
-export interface Resource {
+export class Resource {
 
 	/**
 	 * Path to the directory containing the original resource
 	 */
-	readonly path : string;
+	public path : string;
 
 	/**
 	 * Filename of the resource, without file extension
 	 */
-	filename : string;
+	public filename : string;
 
 	/**
 	 * File extension of the resource
@@ -36,19 +36,57 @@ export interface Resource {
 	 *
 	 * This is also the extension given to the output file.
 	 */
-	ext : string;
+	public ext : string;
+
+	/**
+	 * The full file name, including extension
+	 */
+	public get file() : string { return [this.filename, this.ext].join('.') }
+
+	/** The resource stream */
+	private stream ?: Readable;
+
+	/**
+	 * Creates a resource
+	 *
+	 * @param file - Filename and path of the file
+	 * @param stream   - Stream with the file contents
+	 */
+	public constructor(file : string, stream ?: Readable) {
+		this.path = path.dirname(file);
+		this.filename = path.basename(file, path.extname(file));
+		this.ext = path.extname(file).replace('.', '');
+
+		if (stream) {
+			this.stream = stream;
+		}
+	}
 
 	/**
 	 * Runs the resource through a transform function
 	 *
 	 * @param transform - The stream transform to use
 	 */
-	transform(transform : Transform) : void;
+	public transform(transform : Transform) : void {
+		if (!this.stream) throw new Error('Cannot transform, resource already saved');
+
+		this.stream = this.stream.pipe(transform);
+	}
 
 	/**
 	 * Collects the resource data and returns it
 	 */
-	collect() : Promise<Buffer>;
+	public collect() : Promise<Buffer> {
+		return new Promise(resolve => {
+			if (!this.stream) throw new Error('Cannot collect, resource already saved');
+
+			const chunks : any[] = [];
+			this.stream.on('data', chunk => chunks.push(chunk));
+			this.stream.on('end', () => {
+				resolve(Buffer.concat(chunks));
+			});
+		});
+	}
 
 	/**
 	 * Saves the resource into the configured directory
@@ -59,68 +97,10 @@ export interface Resource {
 	 * @returns The full public path to the resource
 	 *          (baseUrl + generated filename)
 	 */
-	save(outDir : string, baseUrl : string) : Promise<string>;
-
-	/**
-	 * Returns a simple string identifier of the resource
-	 */
-	toString() : string;
-}
-
-export class Res implements Resource {
-
-	public filename : string;
-	public path : string;
-	public ext : string;
-
-	/** Whether this file resource is still open */
-	private open : boolean;
-
-	/** The resource stream */
-	private stream : Readable;
-
-	/**
-	 * Creates a resource
-	 *
-	 * @param ctx  - The current rendering context
-	 * @param file - Filename and path of the file
-	 */
-	public constructor(ctx : Context, file : string) {
-		this.open = true;
-
-		this.path = path.dirname(file);
-		this.filename = path.basename(file, path.extname(file));
-		this.ext = path.extname(file).replace('.', '');
-
-		const filePath = ctx.meta.path;
-		const rootDir = ctx.options.templateRoot;
-		this.stream = createReadStream(path.resolve(rootDir, filePath, file));
-	}
-
-	public transform(transform : Transform) : void {
-		if (!this.open) throw new Error('Cannot transform, resource already saved');
-
-		this.stream = this.stream.pipe(transform);
-	}
-
-	public collect() : Promise<Buffer> {
-		if (!this.open) throw new Error('Cannot collect, resource already saved');
-		this.open = false;
-
-		return new Promise(resolve => {
-			const chunks : any[] = [];
-			this.stream.on('data', chunk => chunks.push(chunk));
-			this.stream.on('end', () => {
-				resolve(Buffer.concat(chunks));
-			});
-		});
-	}
-
 	public async save(outDir : string, baseUrl : string) : Promise<string> {
-		if (!this.open) throw new Error('Cannot save, resource already saved');
-		this.open = false;
+		if (!this.stream) throw new Error('Cannot save, resource already saved');
 
-		const [hashStream, saveStream] = clone(this.stream);
+		const [hashStream, saveStream] = cloneStream(this.stream);
 
 		const hash = createHash('md5').setEncoding('hex');
 		await awaitEvt(hashStream.pipe(hash), 'finish');
@@ -131,35 +111,22 @@ export class Res implements Resource {
 		return [baseUrl, name].join(baseUrl.endsWith('/') ? '' : '/');
 	}
 
+	/**
+	 * Gets the stream from the resource
+	 */
+	public toStream() : Readable {
+		if (!this.stream) throw new Error('Cannot get stream, resource already saved');
+
+		const stream = this.stream;
+		this.stream = undefined;
+		return stream;
+	}
+
+	/**
+	 * Returns a simple string identifier of the resource
+	 */
 	public toString() : string {
 		return `[resource:${ this.filename }.${ this.ext }]`;
 	}
 }
 
-/**
- * Helper to promisify events
- */
-function awaitEvt(stream : Stream, evtName : string) : Promise<void> {
-	return new Promise(resolve => stream.once(evtName, () => resolve()));
-}
-
-/**
- * Clones a single stream into two streams, both containing
- * the data of the original stream
- */
-function clone(stream : Stream) : [Stream, Stream] {
-	const a = new PassThrough();
-	const b = new PassThrough();
-
-	stream.on('data', chunk => {
-		a.push(chunk);
-		b.push(chunk);
-	});
-
-	stream.on('end', () => {
-		a.push(null);
-		b.push(null);
-	});
-
-	return [a, b];
-}
