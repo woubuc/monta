@@ -1,6 +1,6 @@
 {
   "name": "monta",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Monta template compiler",
   "main": "lib/index.js",
   "license": "ISC",

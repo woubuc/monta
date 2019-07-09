@@ -1,6 +1,6 @@
 {
   "name": "monta-plugin-resources",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Provides a system to load, include and transform static assets and page resources",
   "main": "lib/index.js",
   "license": "ISC",
@@ -44,7 +44,7 @@
     "monta": "^0.5.2"
   },
   "devDependencies": {
-    "monta": "^0.5.2"
+    "monta": "^0.5.3"
   },
   "directories": {
     "lib": "lib",
