@@ -71,6 +71,11 @@ export class Context {
 		else this.meta = new ContextMeta();
 	}
 
+	public getPath() : string {
+		if (this.meta.path.length > 0) return this.meta.path;
+		return this.options.templateRoot;
+	}
+
 	public getData<T>(key : string) : T | undefined {
 		return this.functionData.get(key);
 	}
