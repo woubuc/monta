@@ -42,3 +42,26 @@ Use in your templates
   </body>
 </html>
 ```
+
+### Syntax
+```html
+<!-- Get a file -->
+${ get('path/to/file.css') }
+
+<!-- Save to a static file and return the URL -->
+<link href="${ get('style.css') | toUrl() }">
+<img src="${ get('image.jpg') | toUrl() }">
+
+<!-- Return the file as a base64-encoded string -->
+<style>${ get('style.css') | inline() }</style>
+<img src="${ get('...') | inline() }">
+
+<!-- Loop over multiple files --> 
+${ get('*.css') | foreach(): }
+  <link href="${ this | toUrl() ">
+${ :end }
+
+${ get('*.(png|jpg)') | foreach(): }
+  <img src="${ this | toUrl() ">
+${ :end }
+```
