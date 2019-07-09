@@ -41,7 +41,7 @@
     "globby": "^10.0.1"
   },
   "peerDependencies": {
-    "monta": "^0.5.2"
+    "monta": "^0.5.3"
   },
   "devDependencies": {
     "monta": "^0.5.3"
