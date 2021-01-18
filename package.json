@@ -18,7 +18,7 @@
     "@types/minimist": "~1.2.0",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
-    "codecov": "~3.5.0",
+    "codecov": "~3.7.1",
     "eslint": "^6.0.1",
     "extend": "^3.0.2",
     "jest": "~24.8.0",
