@@ -251,10 +251,10 @@ minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-monta@^0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/monta/-/monta-0.5.3.tgz#0e9779cfcdc39c3ea4410afd40936ab387a7bd78"
-  integrity sha512-TtYd00sSJEELmbVV+V1Zdc8LZzcjtbaw1YWp/xFvo8yOQBUmKTUB95HtF3ZKaMpwu1NVqNiTnyboQeJlnVbB/w==
+monta@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/monta/-/monta-0.5.5.tgz#b98b3e0929785a32b6925e0cec4ef9f97b807968"
+  integrity sha512-Qf5qSDusyXRkbsdjyARUX+cfMiOrfjiAd6M0YiP/+B22HeJaQ3L4beotpqcS/WUpbor1MlU6qcx3D7cGZ86hpg==
   dependencies:
     app-root-path "~2.2.1"
     fs-extra "~8.1.0"
@@ -312,9 +312,9 @@ source-map@^0.6.0, source-map@~0.6.0, source-map@~0.6.1:
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
 terser@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-4.1.2.tgz#b2656c8a506f7ce805a3f300a2ff48db022fa391"
-  integrity sha512-jvNoEQSPXJdssFwqPSgWjsOrb+ELoE+ILpHPKXC83tIxOlh2U75F1KuB2luLD/3a6/7K3Vw5pDn+hvu0C4AzSw==
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.1.tgz#a00e5634562de2239fd404c649051bf6fc21144f"
+  integrity sha512-4GnLC0x667eJG0ewJTa6z/yXrbLGv80D9Ru6HIpCQmO+Q4PfEtBFi0ObSckqwL6VyQv/7ENJieXHo2ANmdQwgw==
   dependencies:
     commander "^2.20.0"
     source-map "~0.6.1"
